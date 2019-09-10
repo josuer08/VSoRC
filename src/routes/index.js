@@ -3,7 +3,7 @@ const {
 } = require('express');
 const router = new Router();
 
-let alumnos = [];
+//let alumnos = [];
 
 router.get("/", (req, res) => {
   res.render("index", {
@@ -15,23 +15,6 @@ router.get("/flex", (req, res) => {
   res.render("flex")
 });
 
-router.get('/web', (req, res) => {
-  res.render('web')
-});
-
-router.post('/web', (req, res) => {
-  let {
-    nombre,
-    documento
-  } = req.body;
-  let nuevoRegistro = {
-    nombre,
-    documento,
-    fecha: new Date()
-  };
-  alumnos.push(nuevoRegistro);
-  res.redirect("/");
-});
 
 router.get('/free', (req, res) => {
   var sys = require('sys')
