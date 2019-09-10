@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SystemStats</title>
+  <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+  <%include ../../partials/head%>
+</head>
+
+<body>
+  <header>
+    <%include ../../partials/header%>
+  </header>
+
+  <div class="realtime">
+    <div class="navbar navbar-dark bg-light"><span>Memoria libre en el sistema</span></div>
+    <div class="wrapper">
+      <div id="ram"></div>
+      <script>
+        Plotly.plot('ram', [{
+          y: [0],
+          type: 'line'
+        }], {
+          paper_bgcolor: 'rgba(0,0,0,0)',
+          plot_bgcolor: 'rgba(0,0,0,0)'
+        }, {
+          responsive: true
+        });
+
+        var cnt1 = 0;
+
+        function updatePlot(value) {
+
+          Plotly.extendTraces('ram', {
+            y: [
+              [value]
+            ]
+          }, [0]);
+          cnt1++;
+          if (cnt1 > 100) {
+            Plotly.relayout('ram', {
+              xaxis: {
+                range: [cnt - 100, cnt]
+              }
+            });
+          }
+        }
+        setInterval(function() {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', '/free', true);
+          //console.log(xhr); //para ver en la consola
+          xhr.onload = function() {
+            if (xhr.status == 200) { //can use this.status instead
+              //console.log(xhr.responseText);// para ver en la consola
+              updatePlot(xhr.responseText)
+            }
+          }
+          xhr.send();
+        }, 2000)
+      </script>
+
+    </div>
+    <div class="navbar navbar-dark bg-light"><span>CPU libre en el sistema</span></div>
+    <div class="wrapper CPU">
+      <!-- <div></div> -->
+      <div id="cpu"></div>
+      <!-- <div></div> -->
+      <script type="text/javascript">
+        function updatePlot2(value) {
+          var data = [{
+            values: [parseInt(value), 100 - value],
+            labels: ['idle', 'used'],
+            type: 'pie'
+          }];
+          var layout = {
+            height: 400,
+            width: 500,
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)'
+
+          }
+
+          Plotly.react('cpu', data, layout, {
+            responsive: true
+          });
+        }
+        setInterval(function() {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', '/mpstat', true);
+          //console.log(xhr); //para ver en la consola
+          xhr.onload = function() {
+            if (xhr.status == 200) { //can use this.status instead
+              //console.log(xhr.responseText);// para ver en la consola
+              updatePlot2(xhr.responseText)
+            }
+          }
+          xhr.send();
+        }, 2000)
+      </script>
+    </div>
+    <div class="navbar navbar-dark bg-light"><span>Trafico de la Red</span></div>
+    <div class="wrapper">
+      <div id="trafico"></div>
+      <script>
+        Plotly.plot('trafico', [{
+          y: [0, 1],
+          type: 'line',
+          name: 'in'
+        }, {
+          y: [0, 3],
+          type: 'line',
+          name: 'out'
+        }], {
+          paper_bgcolor: 'rgba(0,0,0,0)',
+          plot_bgcolor: 'rgba(0,0,0,0)'
+        }, {
+          responsive: true
+        });
+
+        var cnt2 = 0;
+
+        function updatePlot3(value1) {
+          Plotly.extendTraces('trafico', {
+            y: [
+              [value1[0]],
+              [value1[1]]
+            ]
+          }, [0, 1]).then(function() {
+            cnt2++;
+          })
+
+          if (cnt2 > 100) {
+            Plotly.relayout('trafico', {
+              xaxis: {
+                range: [cnt2 - 100, cnt2]
+              }
+            });
+          }
+        }
+        setInterval(function() {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', '/ifstat', true);
+          //console.log(xhr); //para ver en la consola
+          xhr.onload = function() {
+            if (xhr.status == 200) { //can use this.status instead
+              // console.log(xhr.responseText); // para ver en la consola
+              var Response = xhr.responseText.replace(/  +/g, ' ');
+              Response = Response.split(" ");
+              // Response = [parseFloat(Response[1]), parseFloat(Response[2])];
+              Response = [Response[1], Response[2]];
+              console.log(Response);
+              updatePlot3(Response)
+            }
+          }
+          xhr.send();
+        }, 500)
+      </script>
+
+    </div>
+  </div>
+  <div class="viewframe">
+    <iframe class="iframea" id="ImportFrame" src="http://localhost:8080"></iframe>
+  </div>
+</body>
+<footer>
+  <%include ../../partials/footer%>
+</footer>
+
+
+</html>
