@@ -3,7 +3,7 @@ const {
 } = require('express');
 const router = new Router();
 
-//let alumnos = [];
+let alumnos = [];
 
 router.get("/", (req, res) => {
   res.render("index", {
