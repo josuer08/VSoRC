@@ -1,7 +1,36 @@
+<nav role="navigation" class="navbar navbar-dark bg-dark">
+<div id="menuToggle">
+  <!--
+  A fake / hidden checkbox is used as click reciever,
+  so you can use the :checked selector on it.
+  -->
+  <input type="checkbox" />
 
+  <!--
+  Some spans to act as a hamburger.
 
-<nav class="navbar navbar-dark bg-dark">
-  <form class="form-inline">
-    <button class="btn btn-outline-success" type="button" onclick="location.href = '/';">VSoRC</button>
-  </form>
+  They are acting like a real hamburger,
+  not that McDonalds stuff.
+  -->
+  <span></span>
+  <span></span>
+  <span></span>
+
+  <!--
+  Too bad the menu has to be inside of the button
+  but hey, it's pure CSS magic.
+  -->
+  <ul id="menu">
+    <a href="/index"><li>Salud</li></a>
+    <a href="/visualize"><li>Visualizador</li></a>
+    <a href="/stats"><li>Estadisticas</li></a>
+    <a href="/starter"><li>Inicializador</li></a>
+    <a href="/Access"><li>Acceso</li></a>
+    <a href="/Topology"><li>Crear topologia</li></a>
+    <a href="https://localhost:8080/" target="_blank"><li>Pagina local</li></a>
+  </ul>
+</div>
+<form class="form-inline">
+  <button class="btn btn-outline-success" type="button" onclick="location.href = '/';">VSoRC</button>
+</form>
 </nav>
