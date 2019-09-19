@@ -14,8 +14,9 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(express.json());
-//para que la ruta de estilos sea visible
+//para que la ruta de estilos y js sea visible
 app.use('/styles', express.static('styles'));
+app.use('/js', express.static('js'));
 //rutas
 app.use(require('./routes/index'));
 

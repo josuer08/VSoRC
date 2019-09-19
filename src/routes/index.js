@@ -3,19 +3,32 @@ const {
 } = require('express');
 const router = new Router();
 
-let alumnos = [];
 
+//renders de las paginas web
 router.get("/", (req, res) => {
-  res.render("index", {
-    alumnos
-  })
+  res.render("index")
 });
 
-router.get("/flex", (req, res) => {
-  res.render("flex")
+router.get("/access", (req, res) => {
+  res.render("access")
 });
 
+router.get("/starter", (req, res) => {
+  res.render("starter")
+});
 
+router.get("/stats", (req, res) => {
+  res.render("stats")
+});
+
+router.get("/topology", (req, res) => {
+  res.render("topology")
+});
+
+router.get("/topologyMaker", (req, res) => {
+  res.render("topologyMaker")
+});
+//en lo adelante se encuentran las peticiones de datos
 router.get('/free', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
