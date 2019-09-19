@@ -1,4 +1,5 @@
 <!-- views/partials/head.ejs -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
 <title>VSoRC</title>
 <!-- CSS (load bootstrap from a CDN) -->
@@ -68,7 +69,7 @@
     transform-origin: 4px 0px;
 
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
-      background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+      background 1s cubic-bezier(0.77, 0.2, 0.05, 1.0),
       opacity 0.55s ease;
   }
 
@@ -85,7 +86,7 @@
  * into a crossmark.
  */
   #menuToggle input:checked~span:nth-last-child(4) {
-    transform: translate(-7px, 8px) rotate(-45deg) scale(0.5, 0.8);
+    transform: translate(-6px, 8px) rotate(-45deg) scale(0.4, 0.8);
     background: #ffcdcd;
   }
 
@@ -101,7 +102,7 @@
  * Ohyeah and the last one should go the other direction
  */
    #menuToggle input:checked~span:nth-last-child(2) {
-    transform: translate(-5px, -10px) rotate(45deg) scale(0.5, 0.8);
+    transform: translate(-4px, -11px) rotate(45deg) scale(0.4, 0.8);
     background: #ffcdcd;
   }
 
@@ -128,8 +129,8 @@
   }
 
   #menu li {
-    padding: 10px 0;
-    font-size: 22px;
+    padding: 0.5rem 0;
+    font-size: 1.5rem;
     color: white;
   }
 
