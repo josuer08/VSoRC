@@ -4,122 +4,95 @@
 
 <head>
   <title></title>
-  <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+
   <%include ../../partials/head%>
-  <!-- aqui van los estilos externos (a ser borrados) -->
-  <link rel="stylesheet" href="/styles/pure-min-0.5.0.css">
-  <link rel="stylesheet" href="/styles/font-awesome.min.css">
-  <link rel="stylesheet" href="/styles/pure-custom.css">
 </head>
 
 <body>
   <header>
     <%include ../../partials/header%>
   </header>
-  <div id="layout">
-    <div id="menu">
-      <div class="pure-menu pure-menu-open">
-        <ul>
-          <li class=" ">
-            <a href="/web/index.html">Topology
-              <i class="fa fa-home"></i></a>
-          </li>
-          <li class=" ">
-            <a href="/web/stats.html">Statistics
-              <i class="fa fa-bar-chart-o"></i></a>
-          </li>
-          <li class="menu-item-divided pure-menu-selected">
-            <a href="/web/tap.html">Manage Tap
-              <i class="fa fa-edit"></i></a>
-          </li>
-          <li class=" ">
-            <a href="/web/loadbalancer.html">Load balancer
-              <i class="fa fa-sitemap"></i></a>
-          </li>
-        </ul>
-      </div>
+
+  <div id="main">
+    <h2>Manage Tap</h2>
+    <p>Aqui se pueden configurar los taps(puertos), para que puedan ser
+      desactivados a efectos de la red, ya que no pueden ser eliminados una vez que han
+      sido creados</p>
+
+    <form class="form">
+      <fieldset>
+        <div>
+          <label>Switch DPID</label>
+          <br>
+          <select id="switch" onchange="updatePorts()">
+          </select>
+        </div>
+
+        <div>
+          <label>Source port(s)</label>
+          <br>
+          <select id="src-ports" multiple>
+          </select>
+        </div>
+
+        <div>
+          <label>Sink port(s)</label>
+          <br>
+          <select id="sink-ports" multiple>
+          </select>
+        </div>
+
+        <div>
+          <label>MAC address</label>
+          <br>
+          <select id="mac-class">
+            <option>--Ignore--</option>
+            <option>Source</option>
+            <option>Destination</option>
+            <option>Src or Dest</option>
+          </select>
+          <input id="mac-addr" type="text" placeholder="12:34:56:78:9A:BC">
+        </div>
+
+        <div>
+          <label>IP address</label>
+          <br>
+          <select id="ip-class">
+            <option>--Ignore--</option>
+            <option>Source</option>
+            <option>Destination</option>
+            <option>Src or Dest</option>
+          </select>
+          <input id="ip-addr" type="text" placeholder="12.34.56.78/24">
+        </div>
+
+        <div>
+          <!--<div class="pure-u-1 pure-u-md-1-3">-->
+          <label>Common traffic types</label>
+          <br>
+          <select id="traffic-type">
+            <option>--Ignore--</option>
+            <option>HTTP</option>
+            <option>HTTPS</option>
+            <option>UDP</option>
+            <option>DHCP</option>
+            <option>ICMP</option>
+          </select>
+        </div>
+      </fieldset>
+    </form>
+
+
+    <div>
+      <button href="#" class="pure-button pure-button-primary" onclick="setTap()">Set</button>
+      <button href="#" class="pure-button pure-button-primary" onclick="clearTap()">Clear</button>
     </div>
-
-    <div id="main">
-      <h2>Manage Tap</h2>
-      <p>Following form allows configuring a stateless tap, i.e., once
-        you create the tap, you cannot track or delete that specific
-        tap. However, you can use the Set and Clear to achieve that effect.
-        Performing a "Clear" operation without specifying any field
-        values will remove all previously created Taps.
-        For this edition of the tap, the source and sink need to be on
-        the same switch.</p>
-
-      <form class="pure-form pure-form-aligned">
-        <fieldset>
-          <div class="pure-control-group">
-            <label>Switch DPID</label>
-            <select id="switch" style="width:12em;" onchange="updatePorts()">
-            </select>
-          </div>
-
-          <div class="pure-control-group">
-            <label>Source port(s)</label>
-            <select id="src-ports" style="width:12em;" multiple>
-            </select>
-          </div>
-
-          <div class="pure-control-group">
-            <label>Sink port(s)</label>
-            <select id="sink-ports" style="width:12em;" multiple>
-            </select>
-          </div>
-
-          <div class="pure-control-group">
-            <label>MAC address</label>
-            <select id="mac-class">
-              <option>--Ignore--</option>
-              <option>Source</option>
-              <option>Destination</option>
-              <option>Src or Dest</option>
-            </select>
-            <input id="mac-addr" type="text" placeholder="01:12:23:34:45:56">
-          </div>
-
-          <div class="pure-control-group">
-            <label>IP address</label>
-            <select id="ip-class">
-              <option>--Ignore--</option>
-              <option>Source</option>
-              <option>Destination</option>
-              <option>Src or Dest</option>
-            </select>
-            <input id="ip-addr" type="text" placeholder="12.23.34.45/24">
-          </div>
-
-          <div class="pure-control-group">
-            <!--<div class="pure-u-1 pure-u-md-1-3">-->
-            <label>Common traffic types</label>
-            <select id="traffic-type">
-              <option>--Ignore--</option>
-              <option>HTTP</option>
-              <option>HTTPS</option>
-              <option>UDP</option>
-              <option>DHCP</option>
-              <option>ICMP</option>
-            </select>
-          </div>
-        </fieldset>
-      </form>
-      <div class="pure-controls">
-        <button href="#" class="pure-button pure-button-primary" onclick="setTap()">Set</button>
-        <button href="#" class="pure-button pure-button-primary" onclick="clearTap()">Clear</button>
-      </div>
-      <div id="post-status">
-      </div>
-    </div><!-- main -->
+    <div id="post-status">
+    </div>
+  </div><!-- main -->
   </div>
   <!--layout -->
-  <div class="footer">
-    <p class="legal-copyright">
-      © 2014 SDN Hub. All rights reserved.
-    </p>
-  </div>
+
 
   <script src="/js/jquery.min.js"></script>
   <script src="/js/utils.js"></script>

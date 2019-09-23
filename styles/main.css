@@ -1,3 +1,12 @@
+/* TO DO LIST */
+/* faltan las sombras
+faltan los textbox y selects
+ */
+
+
+
+
+
 body {
   background:
     linear-gradient(238deg, rgba(70, 70, 70, 0.09) 0%, rgba(70, 70, 70, 0.09) 50%, rgba(214, 214, 214, 0.09) 50%, rgba(214, 214, 214, 0.09) 100%),
@@ -11,8 +20,53 @@ body {
     linear-gradient(90deg, rgb(10, 147, 39), rgb(235, 252, 123));
   display: flex;
   flex-direction: column;
+  font-family: helvetica;
+  padding-top: 10vh;
 }
-
+header{
+  position: absolute;
+  width:100%;
+  left:0;
+  top:0;
+}
+.navbar{
+background-color: #343a40;
+width: auto;
+position: relative;
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+justify-content: space-between;
+padding: 0.5rem 1rem;
+box-sizing: border-box;
+margin: 0;
+top: 0;
+left: 0;
+flex-grow: 1;
+}
+.btn-outline-success{
+  padding: 0;
+  border-style: none;
+  cursor: pointer;
+  border: 1px solid;
+  color: #28A745;
+  border-color: #28A745;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out;
+}
+.btn-outline-success:hover{
+  color: white;
+  background-color: #28A745;
+}
 .realtime {
   /* width: 100vw;
   height: auto;
@@ -44,4 +98,52 @@ body {
 }
 .navbar{
   width: auto;
+}
+
+
+#main{
+  padding: 0em 10vw;
+}
+/* H1 to H6 */
+h1, h2, h3, h4, h5, h6, p, label, span{
+color: white;
+font-weight: bold;
+line-height: 1.5;
+}
+/* formularios */
+.form{
+  width: 100%;
+}
+fieldset{
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  border: 0;
+}
+
+select{
+background-color: rgba(200,200,200,0.5);
+border: 0;
+border-bottom: 2px black solid;
+overflow: hidden;
+width: 15em;
+}
+/* some hacky shit for hidind the arrow */
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+  display: none;
+}
+
+input[type=text]{
+border-radius: 0;
+border: 0;
 }
