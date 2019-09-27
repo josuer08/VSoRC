@@ -19,7 +19,7 @@ app.use('/styles', express.static('styles'));
 app.use('/js', express.static('js'));
 //rutas
 app.use(require('./routes/index'));
-
+// Configurar cabeceras y cors
 //inicia el servidor
 app.listen(app.get('port'), () => {
   console.log("Servidor escuchando en el puerto", app.get('port'))
