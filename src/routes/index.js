@@ -61,5 +61,14 @@ router.get('/ifstat', (req, res) => {
   });
 });
 
+router.get('/gettopo', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("curl localhost:8080/topology", function(error, stdout, stderr) {
+    console.log("gettopo");
+    res.send(stdout);
+  });
+});
 
 module.exports = router;

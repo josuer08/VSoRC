@@ -48,6 +48,7 @@ $(function () {
         var links = [];
 
         var lst = top.switches;
+
         for (var i = 0; i < lst.length; i++) {
             nodes.push({ "id": lst[i].dpid, "type": "switch" });
         }
@@ -138,11 +139,11 @@ $(function () {
         node.append("image")
             .attr("xlink:href", function (d) {
                 if (d.type === "switch") {
-                    return "/home/img/switch.svg"
+                    return "img/switch.svg"
                 } else if (d.type === "cloud") {
-                    return "/home/img/cloud.svg"
+                    return "img/cloud.svg"
                 } else {
-                    return "/home/img/pc.svg"
+                    return "img/pc.svg"
                 }
             })
             .on("mouseover", handleMouseOver)
@@ -286,16 +287,16 @@ $(function () {
 
 
         function jsonget() {
-          const url = "http://"+location.hostname+":8080/topology"
+
           let xhr = new XMLHttpRequest();
-          xhr.open('GET', url , true);
+          xhr.open('GET', "/gettopo" , true);
           //console.log(xhr); //para ver en la consola
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
-              data = JSON.parse(xhr.responseText)
-              listTopology(data)
-              plotGraph(toGraph(data));
+
+              listTopology(JSON.parse(xhr.responseText));
+              plotGraph(toGraph(JSON.parse(xhr.responseText)));
             }
           }
           xhr.send();
