@@ -276,7 +276,7 @@ $(function () {
 
     function getTopology() {
         tabObj.buildTabs("#main", ["Graph", "Tables"], "Nothing to show!");
-        var $svg = $('<svg width="1116" height="600"></svg>');
+        var $svg = $('<svg width="1616" height="900"></svg>');
         var $data = $('<div id="data"></div>');
         tabObj.buildContent('Graph', $svg);
         tabObj.buildContent('Tables', $data);
@@ -284,7 +284,7 @@ $(function () {
 
 
 
-
+// La funcion jsonget fue creada para sustituir el metodo json de D3
 
         function jsonget() {
 

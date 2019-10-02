@@ -3,14 +3,63 @@
 
 <head>
   <title></title>
-  <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="/styles/main.css" /> -->
   <%include ../../partials/head%>
-</head>
+  <style media="screen">
+    body{
+      display: flex;
+      flex-flow: row wrap;
+    }
+    main{
+      flex-grow: 2;
+    }
+    aside{
+      flex-grow: 1;
+    }
+    footer{
+      position: absolute;
+      top: 100%;
+    }
 
+    input[type="text"]{
+      background-color: rgba(200,200,200,0.5);
+      border: 0;
+      border-bottom: 2px black solid;
+      overflow: hidden;
+      width: 15em;
+    }
+    input[type="submit"]{
+      border: 0;
+      border-bottom: 2px black solid;
+      overflow: hidden;
+      width: 15em;
+      background-color: white;
+    }
+  </style>
+</head>
+<header>
+  <%include ../../partials/header%>
+</header>
 <body>
-  <header>
-    <%include ../../partials/header%>
-  </header>
+
+  <main>
+    <form class="" action="/startcontroller" method="get">
+      <input type="text" name="" value="" placeholder="Inserte vaina">
+      <input type="submit" name="" value="Inicar controlador" >
+    </form>
+    <form class="" action="/startproyect" method="post">
+      <input type="text" name="" value="" placeholder="Ip del controlador">
+      <input type="submit" name="" value="Iniciar Proyecto">
+    </form>
+  </main>
+  <aside class="">
+    <div class="statuscontroller">
+
+    </div>
+    <div class="statusproyect">
+
+    </div>
+  </aside>
 </body>
 <footer>
   <%include ../../partials/footer%>
