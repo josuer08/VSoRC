@@ -73,11 +73,15 @@ router.get('/gettopo', (req, res) => {
 
 router.get('/startcontroller', (req, res) => {
   var sys = require('sys')
-  var exec = require('child_process').exec;
+  var exec = require('child_process').spawn;
   var child;
-  chlid = exec("cd /home/pi/ryu && ./ejecutarcontroller.sh", function(error, stdout, stderr){
-    console.log("startcontroller");
-    res.send(stdout);
+  chlid = spawn('python', ['-f','./../pypy.py']);
+
+    pyProg.stdout.on('data', function(data) {
+
+        console.log(data.toString());
+        res.write(data);
+        res.end('end');
   });
 });
 module.exports = router;
