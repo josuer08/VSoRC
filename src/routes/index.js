@@ -71,17 +71,35 @@ router.get('/gettopo', (req, res) => {
   });
 });
 
+
 router.get('/startcontroller', (req, res) => {
   var sys = require('sys')
-  var exec = require('child_process').spawn;
+  var exec = require('child_process').exec;
   var child;
-  chlid = spawn('python', ['-f','./../pypy.py']);
-
-    pyProg.stdout.on('data', function(data) {
-
-        console.log(data.toString());
-        res.write(data);
-        res.end('end');
+  child = exec("cd /home/pi/ryu && setsid $(cat /home/pi/ryu/ejecutarcontroller.sh | grep sudo) >/dev/null 2>&1 < /dev/null &", function(error, stdout, stderr) {
+    console.log("controller started");
+    res.send(stdout);
   });
 });
+
+router.get('/stopcontroller', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("sudo kill $(ps aux | grep python | grep ryu | awk {'print $2'})", function(error, stdout, stderr) {
+    console.log("controller stopped");
+    res.send(stdout);
+  });
+});
+
+router.get('/startvsorc', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("setsid /home/pi/lol.py", function(error, stdout, stderr) {
+    console.log(stdout);
+    res.send(stdout);
+  });
+});
+
 module.exports = router;

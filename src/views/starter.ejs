@@ -28,7 +28,7 @@
       overflow: hidden;
       width: 15em;
     }
-    input[type="submit"]{
+    button{
       border: 0;
       border-bottom: 2px black solid;
       overflow: hidden;
@@ -43,14 +43,49 @@
 <body>
 
   <main>
-    <form class="" action="/startcontroller" method="get">
-      <input type="text" name="" value="" placeholder="Inserte vaina">
-      <input type="submit" name="" value="Inicar controlador" >
-    </form>
-    <form class="" action="/startproyect" method="post">
-      <input type="text" name="" value="" placeholder="Ip del controlador">
-      <input type="submit" name="" value="Iniciar Proyecto">
-    </form>
+      <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
+      <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
+      <button type="button" name="button" onclick="startvsorc()">Iniciar VsoRc</button>
+    <script type="text/javascript">
+
+    function stopcontroller() {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', '/stopcontroller', true);
+      xhr.onload = function() {
+        if (xhr.status == 200) { //can use this.status instead
+          //console.log(xhr.responseText);// para ver en la consola
+          console.log("controller stoped");
+        }
+      }
+      xhr.send();
+    }
+
+    function startcontroller() {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', '/startcontroller', true);
+      //console.log(xhr); //para ver en la consola
+      xhr.onload = function() {
+        if (xhr.status == 200) { //can use this.status instead
+
+          console.log("controller started");
+        }
+      }
+      xhr.send();
+    }
+
+
+      function startvsorc() {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', '/startvsorc', true);
+          xhr.onload = function() {
+            if (xhr.status == 200) { //can use this.status instead
+              //console.log(xhr.responseText);// para ver en la consola
+              console.log("vsorc started");
+            }
+          }
+          xhr.send();
+        }
+    </script>
   </main>
   <aside class="">
     <div class="statuscontroller">
