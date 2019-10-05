@@ -73,14 +73,13 @@
       xhr.send();
     }
 
-
       function startvsorc() {
           let xhr = new XMLHttpRequest();
           xhr.open('GET', '/startvsorc', true);
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
-              console.log("vsorc started");
+              console.log("vsorc startedd");
             }
           }
           xhr.send();
