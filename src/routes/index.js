@@ -71,7 +71,6 @@ router.get('/gettopo', (req, res) => {
   });
 });
 
-
 router.get('/startcontroller', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -95,11 +94,33 @@ router.get('/stopcontroller', (req, res) => {
 router.get('/startvsorc', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
-  var child;
-  child = exec("cd /home/pi && cat fifo | sudo ./clusterGRE.py > aichivo 2>&1 ", function(error, stdout, stderr) {
-    console.log(stdout);
-    res.send(stdout);
+  var child0;//needs a mkfifo named fifo to exist
+  var child1;
+  var child2;
+  var answer;
+  //controlar que solo se haga un arranque por vez y agregar el exec 3>fifo
+  child0 = exec("cd /home/pi && mkfifo fifo && touch aichivo", function(error, stdout, stderr) {
+    console.log(stdout + stderr);
+    answer+=stdout;
   });
+  child1 = exec("exec 3>fifo", function(error, stdout, stderr) {
+    console.log(stdout + stderr);
+    answer+=stdout;
+  });//add disown?
+  child2 = exec("cd /home/pi && cat fifo | sudo ./clusterGRE.py > aichivo 2>&1 &", function(error, stdout, stderr) {
+    console.log(stdout + stderr);
+    answer+=stdout;
+  });
+  res.send(answer);
 });
 
+router.get('/stopvsorc', (req,res) =>{
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi && exec 3>&- && rm fifo aichivo", function(error, stdout, stderr) {
+    console.log(stdout);
+    res.send(stdout);
+  });//esto cierra el fifo, lo cual cierra el programa
+});
 module.exports = router;

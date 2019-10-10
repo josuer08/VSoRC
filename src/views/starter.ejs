@@ -46,6 +46,7 @@
       <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
       <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
       <button type="button" name="button" onclick="startvsorc()">Iniciar VsoRc</button>
+      <button type="button" name="button" onclick="stopvsorc()">Detener VsoRc</button>
     <script type="text/javascript">
 
     function stopcontroller() {
@@ -79,11 +80,22 @@
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
-              console.log("vsorc startedd");
+              console.log("vsorc started");
             }
           }
           xhr.send();
         }
+        function stopvsorc() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/stopvsorc', true);
+            xhr.onload = function() {
+              if (xhr.status == 200) { //can use this.status instead
+                //console.log(xhr.responseText);// para ver en la consola
+                console.log("vsorc stopped");
+              }
+            }
+            xhr.send();
+          }
     </script>
   </main>
   <aside class="">
