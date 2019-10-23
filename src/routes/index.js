@@ -71,6 +71,18 @@ router.get('/gettopo', (req, res) => {
   });
 });
 
+router.get('/listswitch', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("curl localhost:8080/data?list=switches", function(error, stdout, stderr) {
+    console.log("listswitch");
+    console.log(stdout);
+    res.send(stdout);
+  });
+});
+
+
 router.get('/startcontroller', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;

@@ -564,7 +564,7 @@ function hc(myString) {
 
 // Get information from datapaths
 function getSwitchData(request, f, g) {
-    $.get("/data", "list=switches")
+    $.get("/listswitch")
         .done(function (switches) {
             if ($.isEmptyObject(switches)) {
                 var msg = "No switches found!";
