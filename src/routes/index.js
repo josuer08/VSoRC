@@ -78,7 +78,23 @@ router.get('/listswitch', (req, res) => {
   child = exec("curl localhost:8080/data?list=switches", function(error, stdout, stderr) {
     console.log("listswitch");
     console.log(stdout);
-    res.send(stdout);
+    let value = JSON.parse(stdout)
+
+    res.send(value);
+  });
+});
+
+router.get('/status', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  console.log(req.query.status+req.query.dpid);
+  child = exec("curl \"localhost:8080/status?status="+req.query.status+"&dpid="+req.query.dpid+"\"", function(error, stdout, stderr) {
+    console.log("statusFlows");
+    console.log(stdout);
+    let value = JSON.parse(stdout)
+
+    res.send(value);
   });
 });
 
