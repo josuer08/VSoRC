@@ -145,10 +145,28 @@ router.get('/startvsorc', (req, res) => {
 router.get('/stopvsorc', (req,res) =>{
   var sys = require('sys')
   var exec = require('child_process').exec;
-  var child;
-  child = exec("cd /home/pi && exec 3>&- && rm fifo aichivo", function(error, stdout, stderr) {
+  var child1;
+  var child2;
+  var child3;
+  var payload
+  child1 = exec("cd /home/pi && exec 3>&- && rm fifo aichivo", function(error, stdout, stderr) {
     console.log(stdout);
-    res.send(stdout);
+    console.log("rm done");
+    payload+="rm done\n\n"+stdout;
+
   });//esto cierra el fifo, lo cual cierra el programa
+
+  //sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'}) && cd /home/pi && ./multissh.sh sudo -E mn -c; sudo -E mn -c
+  child2 = exec("sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'})", function(error, stdout, stderr) {
+    console.log(stdout);
+    console.log("killed");
+    payload+="killed\n\n"+stdout;
+  });
+  child3 = exec("cd /home/pi && ./multissh.sh sudo -E mn -c; sudo -E mn -c", function(error, stdout, stderr) {
+    console.log(stdout);
+    console.log("multisshed");
+    payload+="Multisshed\n\n"+stdout;
+  });
+  res.send(payload);
 });
 module.exports = router;
