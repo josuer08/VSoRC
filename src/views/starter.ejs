@@ -47,7 +47,11 @@
       <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
       <button type="button" name="button" onclick="startvsorc()">Iniciar VsoRc</button>
       <button type="button" name="button" onclick="stopvsorc()">Detener VsoRc</button>
+      <textarea rows="20" cols="7" id="comandos"></textarea>
     <script type="text/javascript">
+    let topo = document.getElementById('comandos')
+
+
 
     function stopcontroller() {
       let xhr = new XMLHttpRequest();
@@ -59,6 +63,7 @@
         }
       }
       xhr.send();
+
     }
 
     function startcontroller() {
@@ -76,14 +81,18 @@
 
       function startvsorc() {
           let xhr = new XMLHttpRequest();
-          xhr.open('GET', '/startvsorc', true);
+          topology = JSON.stringify(topo.value)
+          xhr.open('
+          GET', '/startvsorc?topology='+topology, true);
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
               console.log("vsorc started");
             }
           }
+
           xhr.send();
+
         }
         function stopvsorc() {
             let xhr = new XMLHttpRequest();

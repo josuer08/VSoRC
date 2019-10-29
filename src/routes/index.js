@@ -103,7 +103,8 @@ router.get('/startcontroller', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("cd /home/pi/ryu && setsid $(cat /home/pi/ryu/ejecutarcontroller.sh | grep sudo) >/dev/null 2>&1 < /dev/null &", function(error, stdout, stderr) {
+  //cd /home/pi && setsid $(cat /home/pi/ejecutarcontroller.sh | grep sudo) >/dev/null 2>&1 < /dev/null &
+  child = exec("cd /home/pi && ./ejecutarcontroller.sh > /dev/null 2>&1 < /dev/null &", function(error, stdout, stderr) {
     console.log("controller started");
     res.send(stdout);
   });
@@ -125,17 +126,25 @@ router.get('/startvsorc', (req, res) => {
   var child0;//needs a mkfifo named fifo to exist
   var child1;
   var child2;
+  var child3;
   var answer;
+  request = JSON.parse(req.query.topology)
+  console.log("Topology is : \n"+ request);
   //controlar que solo se haga un arranque por vez y agregar el exec 3>fifo
-  child0 = exec("cd /home/pi && mkfifo fifo && touch aichivo", function(error, stdout, stderr) {
+  child0 = exec("cd /home/pi && echo \""+request+"\" > data", function(error, stdout, stderr) {
     console.log(stdout + stderr);
     answer+=stdout;
   });
-  child1 = exec("exec 3>fifo", function(error, stdout, stderr) {
+  child1 = exec("cd /home/pi && mkfifo fifo && rm aichivo && touch aichivo", function(error, stdout, stderr) {
     console.log(stdout + stderr);
     answer+=stdout;
-  });//add disown?
-  child2 = exec("cd /home/pi && cat fifo | sudo ./clusterGRE.py > aichivo 2>&1 &", function(error, stdout, stderr) {
+  });
+  child2 = exec("exec 3>fifo", function(error, stdout, stderr) {
+    console.log(stdout + stderr);
+    answer+=stdout;
+  });
+  //child3 uses tail so it can read from fifo even after a EOF
+  child3 = exec("cd /home/pi && tail -n +1 -f fifo | sudo ./clusterGRE.py > aichivo 2>&1 &", function(error, stdout, stderr) {
     console.log(stdout + stderr);
     answer+=stdout;
   });
@@ -149,7 +158,7 @@ router.get('/stopvsorc', (req,res) =>{
   var child2;
   var child3;
   var payload
-  child1 = exec("cd /home/pi && exec 3>&- && rm fifo aichivo", function(error, stdout, stderr) {
+  child1 = exec("cd /home/pi && exec 3>&- && rm fifo", function(error, stdout, stderr) {
     console.log(stdout);
     console.log("rm done");
     payload+="rm done\n\n"+stdout;
