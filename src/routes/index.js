@@ -162,7 +162,6 @@ router.get('/stopvsorc', (req,res) =>{
     console.log(stdout);
     console.log("rm done");
     payload+="rm done\n\n"+stdout;
-
   });//esto cierra el fifo, lo cual cierra el programa
 
   //sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'}) && cd /home/pi && ./multissh.sh sudo -E mn -c; sudo -E mn -c

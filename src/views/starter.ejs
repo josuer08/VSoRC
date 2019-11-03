@@ -11,6 +11,7 @@
       flex-flow: row wrap;
     }
     main{
+      width: 100%;
       flex-grow: 2;
     }
     aside{
@@ -28,12 +29,30 @@
       overflow: hidden;
       width: 15em;
     }
+    .buttons{
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    }
     button{
+      flex-grow: 1;
       border: 0;
       border-bottom: 2px black solid;
       overflow: hidden;
       width: 15em;
       background-color: white;
+      transition: background-color 0.3s ease-in, color 0.3s ease-in;
+    }
+    button:hover{
+      background-color: darkgrey;
+      color: white
+    }
+    textarea{
+      width: 25%;
+      font-size: 1.5em;
+      overflow: auto;
+      height: 15em
     }
   </style>
 </head>
@@ -43,13 +62,15 @@
 <body>
 
   <main>
-      <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
-      <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
+    <div class="buttons">
       <button type="button" name="button" onclick="startvsorc()">Iniciar VsoRc</button>
       <button type="button" name="button" onclick="stopvsorc()">Detener VsoRc</button>
+      <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
+      <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
+    </div>
       <textarea rows="20" cols="7" id="comandos"></textarea>
     <script type="text/javascript">
-    let topo = document.getElementById('comandos')
+    let topo = document.getElementById('comandos') //Donde van escrito el DSL
 
 
 
@@ -82,8 +103,7 @@
       function startvsorc() {
           let xhr = new XMLHttpRequest();
           topology = JSON.stringify(topo.value)
-          xhr.open('
-          GET', '/startvsorc?topology='+topology, true);
+          xhr.open('GET', '/startvsorc?topology='+topology, true);
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
