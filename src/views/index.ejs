@@ -13,9 +13,11 @@
   </header>
 
   <div class="realtime">
-    <div class="navbar navbar-dark bg-light"><span>Memoria libre en el sistema</span></div>
-    <div class="wrapper">
+
+    <div class="wrapper RAM">
+      <div class="navbar navbar-dark bg-light"><span>Memoria libre en el sistema</span></div>
       <div id="ram"></div>
+      <!-- <script src="js/health/functions.js"></script> -->
       <script>
         Plotly.plot('ram', [{
           y: [0],
@@ -58,10 +60,11 @@
           xhr.send();
         }, 2000)
       </script>
-
     </div>
-    <div class="navbar navbar-dark bg-light"><span>CPU libre en el sistema</span></div>
+
     <div class="wrapper CPU">
+      <div class="navbar navbar-dark bg-light"><span>CPU libre en el sistema</span></div>
+
       <!-- <div></div> -->
       <div id="cpu"></div>
       <!-- <div></div> -->
@@ -98,8 +101,9 @@
         }, 2000)
       </script>
     </div>
-    <div class="navbar navbar-dark bg-light"><span>Trafico de la Red</span></div>
-    <div class="wrapper">
+
+    <div class="wrapper TRAFFIC">
+      <div class="navbar navbar-dark bg-light"><span>Trafico de la Red</span></div>
       <div id="trafico"></div>
       <script>
         Plotly.plot('trafico', [{
@@ -155,12 +159,9 @@
           xhr.send();
         }, 500)
       </script>
-
     </div>
   </div>
-  <div class="viewframe">
-    <iframe class="iframea" id="ImportFrame" src="http://localhost:8080"></iframe>
-  </div>
+
 </body>
 <footer>
   <%include ../../partials/footer%>
