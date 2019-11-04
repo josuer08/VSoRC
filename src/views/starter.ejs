@@ -6,36 +6,33 @@
   <!-- <link rel="stylesheet" type="text/css" href="/styles/main.css" /> -->
   <%include ../../partials/head%>
   <style media="screen">
-    body{
+    body {
       display: flex;
       flex-flow: row wrap;
     }
-    main{
+
+    main {
       width: 100%;
       flex-grow: 2;
     }
-    aside{
+
+    aside {
       flex-grow: 1;
     }
-    footer{
+
+    footer {
       position: absolute;
       top: 100%;
     }
 
-    input[type="text"]{
-      background-color: rgba(200,200,200,0.5);
-      border: 0;
-      border-bottom: 2px black solid;
-      overflow: hidden;
-      width: 15em;
+    .buttons {
+      display: flex;
+      width: 100%;
+      margin: 0;
+      padding: 0;
     }
-    .buttons{
-    display: flex;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    }
-    button{
+
+    button {
       flex-grow: 1;
       border: 0;
       border-bottom: 2px black solid;
@@ -44,21 +41,27 @@
       background-color: white;
       transition: background-color 0.3s ease-in, color 0.3s ease-in;
     }
-    button:hover{
+
+    button:hover {
       background-color: darkgrey;
       color: white
     }
-    textarea{
+
+    textarea {
       width: 25%;
       font-size: 1.5em;
       overflow: auto;
-      height: 15em
+      height: 15em;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 0;
+      margin: 0;
     }
   </style>
 </head>
 <header>
   <%include ../../partials/header%>
 </header>
+
 <body>
 
   <main>
@@ -68,63 +71,64 @@
       <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
       <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
     </div>
-      <textarea rows="20" cols="7" id="comandos"></textarea>
+    <textarea rows="20" cols="7" id="comandos"></textarea>
     <script type="text/javascript">
-    let topo = document.getElementById('comandos') //Donde van escrito el DSL
+      let topo = document.getElementById('comandos') //Donde van escrito el DSL
 
 
 
-    function stopcontroller() {
-      let xhr = new XMLHttpRequest();
-      xhr.open('GET', '/stopcontroller', true);
-      xhr.onload = function() {
-        if (xhr.status == 200) { //can use this.status instead
-          //console.log(xhr.responseText);// para ver en la consola
-          console.log("controller stoped");
+      function stopcontroller() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/stopcontroller', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            console.log("controller stoped");
+          }
         }
+        xhr.send();
+
       }
-      xhr.send();
 
-    }
+      function startcontroller() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/startcontroller', true);
+        //console.log(xhr); //para ver en la consola
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
 
-    function startcontroller() {
-      let xhr = new XMLHttpRequest();
-      xhr.open('GET', '/startcontroller', true);
-      //console.log(xhr); //para ver en la consola
-      xhr.onload = function() {
-        if (xhr.status == 200) { //can use this.status instead
-
-          console.log("controller started");
+            console.log("controller started");
+          }
         }
+        xhr.send();
       }
-      xhr.send();
-    }
 
       function startvsorc() {
-          let xhr = new XMLHttpRequest();
-          topology = JSON.stringify(topo.value)
-          xhr.open('GET', '/startvsorc?topology='+topology, true);
-          xhr.onload = function() {
-            if (xhr.status == 200) { //can use this.status instead
-              //console.log(xhr.responseText);// para ver en la consola
-              console.log("vsorc started");
-            }
+        let xhr = new XMLHttpRequest();
+        topology = JSON.stringify(topo.value)
+        xhr.open('GET', '/startvsorc?topology=' + topology, true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            console.log("vsorc started");
           }
-
-          xhr.send();
-
         }
-        function stopvsorc() {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', '/stopvsorc', true);
-            xhr.onload = function() {
-              if (xhr.status == 200) { //can use this.status instead
-                //console.log(xhr.responseText);// para ver en la consola
-                console.log("vsorc stopped");
-              }
-            }
-            xhr.send();
+
+        xhr.send();
+
+      }
+
+      function stopvsorc() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/stopvsorc', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            console.log("vsorc stopped");
           }
+        }
+        xhr.send();
+      }
     </script>
   </main>
   <aside class="">

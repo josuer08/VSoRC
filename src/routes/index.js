@@ -78,7 +78,16 @@ router.get('/listswitch', (req, res) => {
   child = exec("curl localhost:8080/data?list=switches", function(error, stdout, stderr) {
     console.log("listswitch");
     console.log(stdout);
-    let value = JSON.parse(stdout)
+    let value = '';
+    try {
+      value = JSON.parse(stdout)
+    }
+    catch(error) {
+      console.error(error);
+      console.log("no response from server");
+      // expected output: ReferenceError: nonExistentFunction is not defined
+      // Note - error messages will vary depending on browser
+    }
 
     res.send(value);
   });

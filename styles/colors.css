@@ -20,29 +20,29 @@
     --tcolor-2: #FF5027;
     --tcolor-3: #BC2400;
     --tcolor-4: #921C00;
-    
+
     --white: white;
     --text-color: var(--pcolor-4);
 }
 
 :root {
-    --pcolor-0: #246767;	/* Main Primary color */
-    --pcolor-1: #699A9A;
-    --pcolor-2: #428080;
-    --pcolor-3: #0F4F4F;
-    --pcolor-4: #013535;
-    
-    --scolor-0: #AC873C;	/* Main Secondary color (1) */
-    --scolor-1: #FFE4AE;
-    --scolor-2: #D5B36E;
-    --scolor-3: #84601A;
-    --scolor-4: #593C02;
-    
-    --tcolor-0: #AC3C3C;	/* Main Secondary color (2) */
-    --tcolor-1: #FFAEAE;
-    --tcolor-2: #D56E6E;
-    --tcolor-3: #841A1A;
-    --tcolor-4: #590202;
+    --pcolor-0: #28A744;	/* Main Primary color */
+    --pcolor-1: #6FD084;
+    --pcolor-2: #45B85F;
+    --pcolor-3: #128C2D;
+    --pcolor-4: #026F1A;
+
+    --scolor-0: #237888;	/* Main Secondary color (1) */
+    --scolor-1: #63A7B4;
+    --scolor-2: #3B8896;
+    --scolor-3: #116372;
+    --scolor-4: #044D5A;
+
+    --tcolor-0: #91CC31;	/* Main Secondary color (2) */
+    --tcolor-1: #C6F081;
+    --tcolor-2: #ABE155;
+    --tcolor-3: #72AB16;
+    --tcolor-4: #558803;
 
 --white: white;
 --text-color: var(--pcolor-4);

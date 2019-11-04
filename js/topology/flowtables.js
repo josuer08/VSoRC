@@ -95,12 +95,12 @@ $(function () {
     loadFlows();
 
 
-    // function startRefresh() {
-    //     setTimeout(startRefresh,10000);
-    //     loadFlows();
-    // }
+    function startRefresh() {
+        setTimeout(startRefresh,10000);
+        loadFlows();
+    }
 
-    // startRefresh()
+    startRefresh()
 
     // function autoRefreshPage() {
     //     loadFlows();
