@@ -5,58 +5,8 @@
   <title></title>
   <!-- <link rel="stylesheet" type="text/css" href="/styles/main.css" /> -->
   <%include ../../partials/head%>
-  <style media="screen">
-    body {
-      display: flex;
-      flex-flow: row wrap;
-    }
+  <link rel="stylesheet" type="text/css" href="/styles/starter.css" />
 
-    main {
-      width: 100%;
-      flex-grow: 2;
-    }
-
-    aside {
-      flex-grow: 1;
-    }
-
-    footer {
-      position: absolute;
-      top: 100%;
-    }
-
-    .buttons {
-      display: flex;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    button {
-      flex-grow: 1;
-      border: 0;
-      border-bottom: 2px black solid;
-      overflow: hidden;
-      width: 15em;
-      background-color: white;
-      transition: background-color 0.3s ease-in, color 0.3s ease-in;
-    }
-
-    button:hover {
-      background-color: darkgrey;
-      color: white
-    }
-
-    textarea {
-      width: 25%;
-      font-size: 1.5em;
-      overflow: auto;
-      height: 15em;
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 0;
-      margin: 0;
-    }
-  </style>
 </head>
 <header>
   <%include ../../partials/header%>
@@ -65,13 +15,41 @@
 <body>
 
   <main>
-    <div class="buttons">
-      <button type="button" name="button" onclick="startvsorc()">Iniciar VsoRc</button>
-      <button type="button" name="button" onclick="stopvsorc()">Detener VsoRc</button>
-      <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
-      <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
+    <div class="side">
+
+      <div class="panel">
+        <textarea class="text" rows="20" cols="7" id="comandos" placeholder="Definicion de la red como: H1:S1"></textarea>
+        <div class="buttons">
+          <button type="button" name="button" onclick="startvsorc()">Iniciar VSoRC</button>
+          <button type="button" name="button" onclick="stopvsorc()">Detener VSoRC</button>
+          <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
+          <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <textarea class="text" disabled rows="20" cols="7" id="vsorcout" placeholder="Salida del sistema de consola"></textarea>
+        <div class="buttons">
+          <button type="button" name="button" onclick="startvsorc()">Ping all</button>
+          <button type="button" name="button" onclick="stopvsorc()">Placement</button>
+          <button type="button" name="button" onclick="startcontroller()">Iperf3</button>
+        </div>
+      </div>
+
     </div>
-    <textarea rows="20" cols="7" id="comandos"></textarea>
+
+    <div class="side">
+
+      <div class="panel">
+        <textarea class="text" disabled rows="20" cols="7" id="vsorcout" placeholder="Salida del controlador"></textarea>
+      </div>
+
+      <div class="panel">
+
+      </div>
+
+    </div>
+
     <script type="text/javascript">
       let topo = document.getElementById('comandos') //Donde van escrito el DSL
 
@@ -131,14 +109,6 @@
       }
     </script>
   </main>
-  <aside class="">
-    <div class="statuscontroller">
-
-    </div>
-    <div class="statusproyect">
-
-    </div>
-  </aside>
 </body>
 <footer>
   <%include ../../partials/footer%>
