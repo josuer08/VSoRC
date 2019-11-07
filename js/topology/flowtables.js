@@ -96,7 +96,7 @@ $(function () {
 
 
     function startRefresh() {
-        setTimeout(startRefresh,10000);
+        setTimeout(startRefresh,30000);
         loadFlows();
     }
 

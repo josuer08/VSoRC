@@ -139,7 +139,7 @@ $(function () {
         node.append("image")
             .attr("xlink:href", function (d) {
                 if (d.type === "switch") {
-                    return "img/switch.svg"
+                    return "img/switch.png"
                 } else if (d.type === "cloud") {
                     return "img/cloud.svg"
                 } else {
@@ -276,7 +276,7 @@ $(function () {
 
     function getTopology() {
         tabObj.buildTabs("#main", ["Graph", "Tables"], "Nothing to show!");
-        var $svg = $('<svg width="1616" height="900"></svg>');
+        var $svg = $('<svg width="800" height="600"></svg>');
         var $data = $('<div id="data"></div>');
         tabObj.buildContent('Graph', $svg);
         tabObj.buildContent('Tables', $data);
