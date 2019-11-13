@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/styles', express.static('styles'));
 app.use('/js', express.static('js'));
 app.use('/img', express.static('img'));
+app.use('/node_modules', express.static('node_modules'));
 //rutas
 app.use(require('./routes/index'));
 // Configurar cabeceras y cors
