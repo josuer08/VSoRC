@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <!-- <link rel="stylesheet" type="text/css" href="/styles/main.css" /> -->
+  <%include ../../partials/head%>
+  <link rel="stylesheet" type="text/css" href="/styles/starter.css" />
+  <link rel="stylesheet" href="/node_modules/xterm/css/xterm.css" />
+<!-- <link rel="stylesheet" href="/node_modules/xterm/dist/addons/fullscreen/fullscreen.css" /> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js"></script>
+<script src="/node_modules/xterm/lib/xterm.js"></script>
+<script src="/node_modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+<script src="/node_modules/xterm-addon-attach/lib/xterm-addon-attach.js"></script>
+<!-- <script src="/node_modules/xterm/dist/addons/winptyCompat/winptyCompat.js"></script> -->
+
+</head>
+<header>
+  <%include ../../partials/header%>
+
+</header>
+
+<body>
+
+  <main>
+    <div class="side">
+
+      <div class="panel">
+        <textarea class="text" rows="20" cols="7" id="comandos" placeholder="Definicion de la red como: h1:s1"></textarea>
+        <div class="buttons">
+          <button type="button" name="button" onclick="startvsorc()">Iniciar VSoRC</button>
+          <button type="button" name="button" onclick="stopvsorc()">Detener VSoRC</button>
+          <button type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
+          <button type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <textarea class="text" style="font-size: 12px;" disabled rows="20" cols="7" id="vsorcout" placeholder="Salida del sistema de consola"></textarea>
+        <div class="buttons">
+          <button type="button" name="button" onclick="pingall()">Ping all</button>
+          <button type="button" name="button" onclick="placement()">Placement</button>
+          <button type="button" name="button" onclick="iperf()">Iperf3</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="side">
+
+      <div class="panel">
+        <textarea class="text" style="font-size: 12px;" disabled rows="20" cols="7" id="controllerout" placeholder="Salida del controlador"></textarea>
+      </div>
+
+      <div class="terminal"></div>
+
+    </div>
+
+    <script type="text/javascript">
+
+
+
+      let topo = document.getElementById('comandos') //Donde van escrito el DSL
+      let vsorcout = document.getElementById('vsorcout') //salida del vsorc
+      let controllerout = document.getElementById('controllerout') //salida del controlador
+
+      let intervalController = null;
+      let intervalVsorc = null
+
+      function startcontroller() {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/startcontroller', true);
+        //console.log(xhr); //para ver en la consola
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            console.log("controller started");
+          }
+        }
+        xhr.send();
+        intervalController=setInterval(getcontrollerdata, 500);
+      }
+
+      function stopcontroller() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/stopcontroller', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            console.log("controller stoped");
+          }
+        }
+        xhr.send();
+        clearInterval(intervalController);
+        controllerout.value='';
+      }
+      function getcontrollerdata() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/getcontrollerdata', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            controllerout.value=xhr.response;
+            console.log("getting controller data");
+          }
+        }
+        xhr.send();
+
+        controllerout.scrollTop = controllerout.scrollHeight;
+      }
+
+      function startvsorc() {
+        let xhr = new XMLHttpRequest();
+        topology = JSON.stringify(topo.value)
+        xhr.open('GET', '/startvsorc?topology=' + topology, true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            console.log("vsorc started");
+          }
+        }
+        xhr.send();
+        intervalVsorc = setInterval(getvsorcdata, 2000);
+      }
+
+      function stopvsorc() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/stopvsorc', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+
+            console.log("vsorc stopped");
+          }
+        }
+        xhr.send();
+        clearInterval(intervalVsorc);
+        vsorcout.value='';
+      }
+
+      function getvsorcdata() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/getvsorcdata', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value=xhr.response;
+            console.log("getting vsorc data");
+
+
+          }
+        }
+        xhr.send();
+
+        vsorcout.scrollTop = vsorcout.scrollHeight;
+      }
+      function pingall() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/pingall', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("pingall");
+
+
+          }
+        }
+        xhr.send();
+      }
+      function placement() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/placement', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("placement");
+
+
+          }
+        }
+        xhr.send();
+      }
+    ///////////////////////////////////////////////////////////////////////CODIGO DE LA terminal
+    // No idea what these are about. Just copied them from the demo code
+     // Terminal.applyAddon(attach);
+     // Terminal.applyAddon(fit);
+     // Terminal.applyAddon(winptyCompat);
+     // The terminal
+
+     // const fitAddon = new FitAddon();
+     // term.loadAddon(fitAddon);
+
+
+     const term = new Terminal();
+     // No idea what this does
+     // term.winptyCompatInit();
+     // This kinda makes sense
+     const container = document.getElementById('terminal');
+     term.open(container);
+     // Open the websocket connection to the backend
+     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+     const port = location.port ? `:${location.port}` : '';
+     const socketUrl = `${protocol}${location.hostname}${port}/shell`;
+     const socket = new WebSocket(socketUrl);
+     const attachAddon = new AttachAddon(socket);
+     term.loadAddon(attachAddon);
+     // Attach the socket to the terminal
+     socket.onopen = (ev) => { term.attach(socket); };
+     // Not going to worry about close/error for the websocket
+     //////////////////////////////////////////////////////////////////////FIN DEL CODIGO DE LA TERMINAL
+    </script>
+  </main>
+</body>
+<footer>
+  <%include ../../partials/footer%>
+</footer>
+
+
+</html>

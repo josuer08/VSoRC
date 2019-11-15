@@ -1,8 +1,32 @@
 const express = require('express'); // pide express sea requerido
 const path = require('path'); // pide que path sea requerido
-
+const pty = require('node-pty'); ////////////////ASKS FOR NODE-PTY
 // inicializaciones
 const app = express();
+const expressWs = require('express-ws')(app);///////////////////ASK FOR THE WEBSOCKET FROM EXPRESS
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Instantiate shell and set up data handlers
+expressWs.app.ws('/shell', (ws, req) => {
+  // Spawn the shell
+  const shell = pty.spawn('/bin/bash', [], {
+    name: 'xterm-color',
+    cwd: process.env.PWD,
+    env: process.env
+  });
+  // For all shell data send it to the websocket
+  shell.on('data', (data) => {
+    ws.send(data);
+  });
+  // For all websocket data send it to the shell
+  ws.on('message', (msg) => {
+    shell.write(msg);
+  });
+});
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 //configuraciones
 app.set('port', process.env.PORT || 3000);

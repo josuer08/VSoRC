@@ -71,6 +71,43 @@ router.get('/gettopo', (req, res) => {
   });
 });
 
+router.get('/pingall', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("echo pingall > fifo", function(error, stdout, stderr) {
+    console.log("pingall");
+    res.send(stdout);
+  });
+});
+router.get('/placement', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("echo placement > fifo", function(error, stdout, stderr) {
+    console.log("placement");
+    res.send(stdout);
+  });
+});
+
+router.get('/getvsorcdata', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi && cat aichivo 2>&1", function(error, stdout, stderr) {
+    console.log("getting vsorc data");
+    res.send(stdout);
+  });
+});
+router.get('/getcontrollerdata', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi && cat controllerout 2>&1", function(error, stdout, stderr) {
+    console.log("getting controller data");
+    res.send(stdout);
+  });
+});
 router.get('/listswitch', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -113,7 +150,8 @@ router.get('/startcontroller', (req, res) => {
   var exec = require('child_process').exec;
   var child;
   //cd /home/pi && setsid $(cat /home/pi/ejecutarcontroller.sh | grep sudo) >/dev/null 2>&1 < /dev/null &
-  child = exec("cd /home/pi && ./ejecutarcontroller.sh > /dev/null 2>&1 < /dev/null &", function(error, stdout, stderr) {
+  //cd /home/pi && ./ejecutarcontroller.sh > /dev/null 2>&1 < /dev/null &  //comando anterior
+  child = exec("cd /home/pi && rm controllerout && touch controllerout && ./ejecutarcontroller.sh > controllerout 2>&1 &", function(error, stdout, stderr) {
     console.log("controller started");
     res.send(stdout);
   });
@@ -123,7 +161,7 @@ router.get('/stopcontroller', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("sudo kill $(ps aux | grep python | grep ryu | awk {'print $2'})", function(error, stdout, stderr) {
+  child = exec("cd /home/pi && rm controllerout && sudo kill $(ps aux | grep python | grep ryu | awk {'print $2'})", function(error, stdout, stderr) {
     console.log("controller stopped");
     res.send(stdout);
   });
@@ -167,22 +205,25 @@ router.get('/stopvsorc', (req,res) =>{
   var child2;
   var child3;
   var payload
-  child1 = exec("cd /home/pi && exec 3>&- && rm fifo", function(error, stdout, stderr) {
+  console.log("erasing...");
+  child1 = exec("cd /home/pi && exec 3>&- && rm fifo && rm aichivo", function(error, stdout, stderr) {
     console.log(stdout);
-    console.log("rm done");
+
     payload+="rm done\n\n"+stdout;
   });//esto cierra el fifo, lo cual cierra el programa
 
   //sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'}) && cd /home/pi && ./multissh.sh sudo -E mn -c; sudo -E mn -c
+  console.log("killing all...");
   child2 = exec("sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'})", function(error, stdout, stderr) {
     console.log(stdout);
-    console.log("killed");
     payload+="killed\n\n"+stdout;
   });
+  console.log("Multisshing and cleaning...");
   child3 = exec("cd /home/pi && ./multissh.sh sudo -E mn -c; sudo -E mn -c", function(error, stdout, stderr) {
     console.log(stdout);
     console.log("multisshed");
     payload+="Multisshed\n\n"+stdout;
+
   });
   res.send(payload);
 });
