@@ -75,7 +75,7 @@ router.get('/pingall', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("echo pingall > fifo", function(error, stdout, stderr) {
+  child = exec("cd /home/pi && echo pingall > fifo", function(error, stdout, stderr) {
     console.log("pingall");
     res.send(stdout);
   });
@@ -84,7 +84,7 @@ router.get('/placement', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("echo placement > fifo", function(error, stdout, stderr) {
+  child = exec("cd /home/pi && echo placement > fifo", function(error, stdout, stderr) {
     console.log("placement");
     res.send(stdout);
   });
