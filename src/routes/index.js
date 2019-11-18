@@ -33,7 +33,7 @@ router.get('/free', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("free -b | grep Mem |  awk  '{print $7}'", function(error, stdout, stderr) {
+  child = exec("free -b | grep Mem |  awk  '{print $3}'", function(error, stdout, stderr) {
     console.log("free");
     res.send(stdout);
   });
@@ -44,7 +44,7 @@ router.get('/mpstat', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("mpstat 1 1| grep all | awk '{print $13}'", function(error, stdout, stderr) {
+  child = exec("mpstat 1 1| grep all | grep Average | awk '{print $12}'", function(error, stdout, stderr) {
     console.log("mpstat");
     res.send(stdout);
   });
@@ -55,7 +55,7 @@ router.get('/ifstat', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("ifstat -n -b -i wlp2s0  0.3 1 | grep [0-9]$", function(error, stdout, stderr) {
+  child = exec("ifstat -n -b -i eth0  0.3 1 | grep [0-9]$", function(error, stdout, stderr) {
     console.log("ifstat");
     res.send(stdout);
   });
@@ -71,6 +71,15 @@ router.get('/gettopo', (req, res) => {
   });
 });
 
+router.get('/iperf', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi && echo iperf > fifo", function(error, stdout, stderr) {
+    console.log("pingall");
+    res.send(stdout);
+  });
+});
 router.get('/pingall', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -151,7 +160,7 @@ router.get('/startcontroller', (req, res) => {
   var child;
   //cd /home/pi && setsid $(cat /home/pi/ejecutarcontroller.sh | grep sudo) >/dev/null 2>&1 < /dev/null &
   //cd /home/pi && ./ejecutarcontroller.sh > /dev/null 2>&1 < /dev/null &  //comando anterior
-  child = exec("cd /home/pi && rm controllerout && touch controllerout && ./ejecutarcontroller.sh > controllerout 2>&1 &", function(error, stdout, stderr) {
+  child = exec("cd /home/pi && touch controllerout && ./ejecutarcontroller.sh > controllerout 2>&1 &", function(error, stdout, stderr) {
     console.log("controller started");
     res.send(stdout);
   });
@@ -182,7 +191,7 @@ router.get('/startvsorc', (req, res) => {
     console.log(stdout + stderr);
     answer+=stdout;
   });
-  child1 = exec("cd /home/pi && mkfifo fifo && rm aichivo && touch aichivo", function(error, stdout, stderr) {
+  child1 = exec("cd /home/pi && mkfifo fifo && touch aichivo", function(error, stdout, stderr) {
     console.log(stdout + stderr);
     answer+=stdout;
   });

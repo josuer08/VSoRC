@@ -65,11 +65,14 @@
       let vsorcout = document.getElementById('vsorcout') //salida del vsorc
       let controllerout = document.getElementById('controllerout') //salida del controlador
 
-      let intervalController = null;
-      let intervalVsorc = null
+      let timeVsorc = 1000;
+      let timeController = 1000;
+      //Estos time son para especificar cada cuantos ms se pedira leer la data de los archivos aichivo y controllerout
+
+      let intervalController = null;//Para tener el id del interval para obtener data del controller
+      let intervalVsorc = null; //Para tener el id del interval para obtener data del vsorc
 
       function startcontroller() {
-
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/startcontroller', true);
         //console.log(xhr); //para ver en la consola
@@ -79,7 +82,7 @@
           }
         }
         xhr.send();
-        intervalController=setInterval(getcontrollerdata, 500);
+        intervalController=setInterval(getcontrollerdata, timeController);
       }
 
       function stopcontroller() {
@@ -121,7 +124,7 @@
           }
         }
         xhr.send();
-        intervalVsorc = setInterval(getvsorcdata, 2000);
+        intervalVsorc = setInterval(getvsorcdata, timeVsorc);
       }
 
       function stopvsorc() {
@@ -158,6 +161,21 @@
       function pingall() {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/pingall', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("pingall");
+
+
+          }
+        }
+        xhr.send();
+      }
+
+      function iperf() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/iperf', true);
         xhr.onload = function() {
           if (xhr.status == 200) { //can use this.status instead
             //console.log(xhr.responseText);// para ver en la consola
