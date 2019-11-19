@@ -42,6 +42,9 @@
           <button type="button" name="button" onclick="pingall()">Ping all</button>
           <button type="button" name="button" onclick="placement()">Placement</button>
           <button type="button" name="button" onclick="iperf()">Iperf3</button>
+          <button type="button" name="button" onclick="net()">net</button>
+          <button type="button" name="button" onclick="nodes()">nodes</button>
+          <button type="button" name="button" onclick="status()">status</button>
         </div>
       </div>
 
@@ -72,6 +75,9 @@
       let intervalController = null;//Para tener el id del interval para obtener data del controller
       let intervalVsorc = null; //Para tener el id del interval para obtener data del vsorc
 
+      intervalVsorc = setInterval(getvsorcdata, timeVsorc);
+      intervalController=setInterval(getcontrollerdata, timeController);
+
       function startcontroller() {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/startcontroller', true);
@@ -82,7 +88,7 @@
           }
         }
         xhr.send();
-        intervalController=setInterval(getcontrollerdata, timeController);
+
       }
 
       function stopcontroller() {
@@ -95,7 +101,7 @@
           }
         }
         xhr.send();
-        clearInterval(intervalController);
+        //clearInterval(intervalController);
         controllerout.value='';
       }
       function getcontrollerdata() {
@@ -124,7 +130,7 @@
           }
         }
         xhr.send();
-        intervalVsorc = setInterval(getvsorcdata, timeVsorc);
+
       }
 
       function stopvsorc() {
@@ -138,7 +144,7 @@
           }
         }
         xhr.send();
-        clearInterval(intervalVsorc);
+        //clearInterval(intervalVsorc);
         vsorcout.value='';
       }
 
