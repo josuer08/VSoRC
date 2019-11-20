@@ -71,6 +71,46 @@ router.get('/gettopo', (req, res) => {
   });
 });
 
+router.get('/net', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && echo net > fifo", function(error, stdout, stderr) {
+    console.log("pingall");
+    res.send(stdout);
+  });
+});
+
+router.get('/nodes', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && echo nodes > fifo", function(error, stdout, stderr) {
+    console.log("pingall");
+    res.send(stdout);
+  });
+});
+
+router.get('/status', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && echo status > fifo", function(error, stdout, stderr) {
+    console.log("pingall");
+    res.send(stdout);
+  });
+});
+
+router.get('/intfs', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && echo intfs > fifo", function(error, stdout, stderr) {
+    console.log("pingall");
+    res.send(stdout);
+  });
+});
+
 router.get('/iperf', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -80,6 +120,7 @@ router.get('/iperf', (req, res) => {
     res.send(stdout);
   });
 });
+
 router.get('/pingall', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;

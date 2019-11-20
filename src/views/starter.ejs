@@ -42,9 +42,10 @@
           <button type="button" name="button" onclick="pingall()">Ping all</button>
           <button type="button" name="button" onclick="placement()">Placement</button>
           <button type="button" name="button" onclick="iperf()">Iperf3</button>
-          <button type="button" name="button" onclick="net()">net</button>
-          <button type="button" name="button" onclick="nodes()">nodes</button>
-          <button type="button" name="button" onclick="status()">status</button>
+          <button type="button" name="button" onclick="net()">Network</button>
+          <button type="button" name="button" onclick="nodes()">Nodes</button>
+          <button type="button" name="button" onclick="status()">Status</button>
+          <button type="button" name="button" onclick="intfs()">Interfaces</button>
         </div>
       </div>
 
@@ -196,6 +197,66 @@
       function placement() {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/placement', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("placement");
+
+
+          }
+        }
+        xhr.send();
+      }
+
+      function net() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/net', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("net");
+
+
+          }
+        }
+        xhr.send();
+      }
+
+      function nodes() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/nodes', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("nodes");
+
+
+          }
+        }
+        xhr.send();
+      }
+
+      function status() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/status', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            vsorcout.value+=xhr.response;
+            console.log("placement");
+
+
+          }
+        }
+        xhr.send();
+      }
+
+      function intfs() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/intfs', true);
         xhr.onload = function() {
           if (xhr.status == 200) { //can use this.status instead
             //console.log(xhr.responseText);// para ver en la consola
