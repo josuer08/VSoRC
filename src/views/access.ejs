@@ -5,12 +5,30 @@
   <title></title>
   <link rel="stylesheet" type="text/css" href="/styles/main.css" />
   <%include ../../partials/head%>
+  <style media="screen">
+    .Terminal::after{
+      content: "-|+|x";
+      color: white;
+      position: relative;
+      left: calc(100% - 60px);
+      font-size: 1.5em;
+      font-weight: bolder;
+      background-color: grey;
+    }
+    .Terminal{
+      background-color: black;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
   <header>
     <%include ../../partials/header%>
   </header>
+  <div class="Terminal">
+
+  </div>
 </body>
 <footer>
   <%include ../../partials/footer%>
