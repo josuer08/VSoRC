@@ -56,9 +56,9 @@
       <div class="panel">
         <textarea class="text" style="font-size: 12px;" disabled rows="20" cols="7" id="controllerout" placeholder="Salida del controlador"></textarea>
       </div>
-
-      <div class="terminal"></div>
-
+      <div class="panel">
+        <textarea class="text" style="font-size: 12px;" disabled rows="20" cols="7" id="a" placeholder="Salida del controlador"></textarea>
+      </div>
     </div>
 
     <script type="text/javascript">
@@ -241,7 +241,7 @@
 
       function status() {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', '/status', true);
+        xhr.open('GET', '/statusnodes', true);
         xhr.onload = function() {
           if (xhr.status == 200) { //can use this.status instead
             //console.log(xhr.responseText);// para ver en la consola
@@ -268,34 +268,7 @@
         }
         xhr.send();
       }
-    ///////////////////////////////////////////////////////////////////////CODIGO DE LA terminal
-    // No idea what these are about. Just copied them from the demo code
-     // Terminal.applyAddon(attach);
-     // Terminal.applyAddon(fit);
-     // Terminal.applyAddon(winptyCompat);
-     // The terminal
 
-     // const fitAddon = new FitAddon();
-     // term.loadAddon(fitAddon);
-
-
-     const term = new Terminal();
-     // No idea what this does
-     // term.winptyCompatInit();
-     // This kinda makes sense
-     const container = document.getElementById('terminal');
-     term.open(container);
-     // Open the websocket connection to the backend
-     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-     const port = location.port ? `:${location.port}` : '';
-     const socketUrl = `${protocol}${location.hostname}${port}/shell`;
-     const socket = new WebSocket(socketUrl);
-     const attachAddon = new AttachAddon(socket);
-     term.loadAddon(attachAddon);
-     // Attach the socket to the terminal
-     socket.onopen = (ev) => { term.attach(socket); };
-     // Not going to worry about close/error for the websocket
-     //////////////////////////////////////////////////////////////////////FIN DEL CODIGO DE LA TERMINAL
     </script>
   </main>
 </body>

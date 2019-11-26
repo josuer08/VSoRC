@@ -158,12 +158,32 @@
           }
           xhr.send();
         }, 500)
+
       </script>
     </div>
 
     <div class="wrapper TEMP">
       <div class="navbar navbar-dark bg-light"><span>Temperatura de los equipos</span></div>
-      <div id="trafico"></div>
+      <div id="temp">
+        <textarea class="text" rows="20" cols="7" id="temperatura" placeholder="Definicion de la red como: h1:s1"></textarea>
+      </div>
+      <script>
+      function showtemp() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/showtemp', true);
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            //console.log(xhr.responseText);// para ver en la consola
+            console.log(xhr.response);
+            document.getElementById('temperatura').value = xhr.response;
+          }
+        }
+        xhr.send();
+        //clearInterval(intervalController);
+
+      }
+      setInterval(showtemp,3000);
+      </script>
     </div>
 
   </div>

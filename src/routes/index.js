@@ -61,6 +61,15 @@ router.get('/ifstat', (req, res) => {
   });
 });
 
+router.get('/showtemp', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && ./gettemp.sh", function(error, stdout, stderr) {
+    console.log("show temp");
+    res.send(stdout);
+  });
+});
 router.get('/gettopo', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -76,7 +85,7 @@ router.get('/net', (req, res) => {
   var exec = require('child_process').exec;
   var child;
   child = exec("cd /home/pi/scripts && echo net > fifo", function(error, stdout, stderr) {
-    console.log("pingall");
+    console.log("net");
     res.send(stdout);
   });
 });
@@ -86,17 +95,17 @@ router.get('/nodes', (req, res) => {
   var exec = require('child_process').exec;
   var child;
   child = exec("cd /home/pi/scripts && echo nodes > fifo", function(error, stdout, stderr) {
-    console.log("pingall");
+    console.log("nodes");
     res.send(stdout);
   });
 });
 
-router.get('/status', (req, res) => {
+router.get('/statusnodes', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
   child = exec("cd /home/pi/scripts && echo status > fifo", function(error, stdout, stderr) {
-    console.log("pingall");
+    console.log("status");
     res.send(stdout);
   });
 });
@@ -106,7 +115,7 @@ router.get('/intfs', (req, res) => {
   var exec = require('child_process').exec;
   var child;
   child = exec("cd /home/pi/scripts && echo intfs > fifo", function(error, stdout, stderr) {
-    console.log("pingall");
+    console.log("interfaces");
     res.send(stdout);
   });
 });
