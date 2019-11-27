@@ -225,7 +225,25 @@ router.get('/stopcontroller', (req, res) => {
     res.send(stdout);
   });
 });
-
+router.get('/sendcommand', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  request = JSON.parse(req.query.cmd); //recibiendo el comando
+  child = exec("cd /home/pi/scripts && echo \""+request+"\" > fifo", function(error, stdout, stderr) {
+    console.log("command received \n" + request+"\n");
+    res.send(stdout);
+  });
+});
+router.get('/cancel', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("sudo kill -2 $(ps aux | grep GRE| grep sudo|awk {'print $2'})", function(error, stdout, stderr) {
+    console.log("cancelled");
+    res.send(stdout);
+  });
+});
 router.get('/startvsorc', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
