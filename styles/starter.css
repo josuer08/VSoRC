@@ -39,6 +39,10 @@ button {
   background-color: white;
   transition: background-color 0.3s ease-in, color 0.3s ease-in;
 }
+ button:disabled {
+  color:rgba(255,0,0, 0.3);
+  background-color: grey;
+}
 
 button:hover {
   background-color: darkgrey;
@@ -59,4 +63,10 @@ textarea {
   width: 83%;
   height: 2em;
 
+}
+#raspberrys{
+  height: 19em;
+}
+#controllerout{
+  height: 23em;
 }

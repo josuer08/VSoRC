@@ -74,8 +74,9 @@ $(function () {
         }
 
         lst = top.hosts;
+        console.log(top.hosts);
         for (var i = 0; i < lst.length; i++) {
-            nodes.push({ "id": lst[i].mac, "type": "host" });
+            nodes.push({ "id": lst[i].mac, "type": "host","ip": lst[i].ipv4});
             links.push({
                 "source": lst[i].port.dpid, "target": lst[i].mac, "value": 2,
                 "port": { "source": lst[i].port.port_no, "target": 0 }
@@ -153,6 +154,12 @@ $(function () {
             .attr("class", "label")
             .attr("dy", size + 14)
             .text(function (d) { return d.id; });
+
+
+       node.append("text")
+            .attr("class", "label")
+            .attr("dy", size + 26)
+            .text(function (d) { if (d.type === "host")return (d.ip); });
             // .text(function (d) { return d.id.replace(/^0+/, ''); });
 
 

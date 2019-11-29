@@ -24,7 +24,8 @@ router.get("/stats", (req, res) => {
 router.get("/topology", (req, res) => {
   res.render("topology")
 });
-
+let isVsorcUP = false;
+let isControllerUP = false;
 router.get("/topologyMaker", (req, res) => {
   res.render("topologyMaker")
 });
@@ -90,6 +91,16 @@ router.get('/net', (req, res) => {
   });
 });
 
+router.get('/rpiping', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && ./rpiping.sh", function(error, stdout, stderr) {
+    console.log("rpiping");
+    res.send(stdout);
+  });
+});
+
 router.get('/nodes', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -150,21 +161,32 @@ router.get('/placement', (req, res) => {
 });
 
 router.get('/getvsorcdata', (req, res) => {
+
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("cd /home/pi/scripts && cat aichivo 2>&1", function(error, stdout, stderr) {
-    console.log("getting vsorc data");
-    res.send(stdout);
+  var child2;
+  child2 = exec("ps aux | grep GRE| grep sudo | grep -v tail| awk {'print $2'}", function(error, stdout, stderr) {
+    console.log("view status vsorc");
+    if (stdout === ""){
+      isVsorcUP = false;
+    }else {
+      isVsorcUP = true;
+    }
   });
+  child = exec("cd /home/pi/scripts && cat aichivo 2>/dev/null", function(error, stdout, stderr) {
+    console.log("getting vsorc data");
+    res.send(stdout+"^"+isVsorcUP);
+  });
+
 });
 router.get('/getcontrollerdata', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("cd /home/pi/scripts && cat controllerout 2>&1", function(error, stdout, stderr) {
+  child = exec("cd /home/pi/scripts && cat controllerout 2>/dev/null", function(error, stdout, stderr) {
     console.log("getting controller data");
-    res.send(stdout);
+    res.send(stdout+"^"+isControllerUP);
   });
 });
 router.get('/listswitch', (req, res) => {
@@ -205,6 +227,7 @@ router.get('/status', (req, res) => {
 
 
 router.get('/startcontroller', (req, res) => {
+  isControllerUP = true;
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
@@ -217,6 +240,7 @@ router.get('/startcontroller', (req, res) => {
 });
 
 router.get('/stopcontroller', (req, res) => {
+  isControllerUP = false;
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
@@ -245,12 +269,14 @@ router.get('/cancel', (req, res) => {
   });
 });
 router.get('/startvsorc', (req, res) => {
+
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child0;//needs a mkfifo named fifo to exist
   var child1;
   var child2;
   var child3;
+  var child4;
   var answer;
   request = JSON.parse(req.query.topology)
   console.log("Topology is : \n"+ request);
@@ -259,7 +285,7 @@ router.get('/startvsorc', (req, res) => {
     console.log(stdout + stderr);
     answer+=stdout;
   });
-  child1 = exec("cd /home/pi/scripts && mkfifo fifo && touch aichivo", function(error, stdout, stderr) {
+  child1 = exec("cd /home/pi/scripts && mkfifo fifo && rm aichivo && touch aichivo", function(error, stdout, stderr) {
     console.log(stdout + stderr);
     answer+=stdout;
   });
@@ -267,6 +293,8 @@ router.get('/startvsorc', (req, res) => {
     console.log(stdout + stderr);
     answer+=stdout;
   });
+
+
   //child3 uses tail so it can read from fifo even after a EOF
   child3 = exec("cd /home/pi/scripts && tail -n +1 -f fifo | sudo ./clusterGRE.py > aichivo 2>&1 &", function(error, stdout, stderr) {
     console.log(stdout + stderr);
@@ -276,6 +304,7 @@ router.get('/startvsorc', (req, res) => {
 });
 
 router.get('/stopvsorc', (req,res) =>{
+
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child1;
@@ -283,25 +312,25 @@ router.get('/stopvsorc', (req,res) =>{
   var child3;
   var payload
   console.log("erasing...");
-  child1 = exec("cd /home/pi/scripts && exec 3>&- && rm fifo && rm aichivo", function(error, stdout, stderr) {
+  child1 = exec("cd /home/pi/scripts && exec 3>&- ", function(error, stdout, stderr) {
     console.log(stdout);
 
     payload+="rm done\n\n"+stdout;
   });//esto cierra el fifo, lo cual cierra el programa
 
-  //sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'}) && cd /home/pi && ./multissh.sh sudo -E mn -c; sudo -E mn -c
-  console.log("killing all...");
-  child2 = exec("sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'})", function(error, stdout, stderr) {
+  //antes, en ves de echo exit > fifo, estaba sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'})
+  console.log("Exiting...");
+  child2 = exec("cd /home/pi/scripts && echo exit > fifo && rm fifo", function(error, stdout, stderr) {
     console.log(stdout);
     payload+="killed\n\n"+stdout;
   });
-  console.log("Multisshing and cleaning...");
-  child3 = exec("cd /home/pi/scripts && ./multissh.sh sudo -E mn -c; sudo -E mn -c", function(error, stdout, stderr) {
-    console.log(stdout);
-    console.log("multisshed");
-    payload+="Multisshed\n\n"+stdout;
-
-  });
+  // console.log("Multisshing and cleaning...");
+  // child3 = exec("cd /home/pi/scripts && ./multissh.sh sudo -E mn -c; sudo -E mn -c", function(error, stdout, stderr) {
+  //   console.log(stdout);
+  //   console.log("multisshed");
+  //   payload+="Multisshed\n\n"+stdout;
+  //
+  // });
   res.send(payload);
 });
 module.exports = router;
