@@ -8,7 +8,7 @@
 7 verbose unsafe-perm in lifecycle true
 8 info web@1.0.0 Failed to exec start script
 9 error web@1.0.0 start: `node src/index.js`
-9 error Exit status 143
+9 error Exit status 1
 10 error Failed at the web@1.0.0 start script.
 10 error This is most likely a problem with the web package,
 10 error not with npm itself.

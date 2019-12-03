@@ -30,7 +30,8 @@
         <div class="buttons">
           <button id="btnstartvsorc" type="button" name="button" onclick="startvsorc()">Iniciar VSoRC</button>
           <button id="btnstopvsorc" type="button" name="button" onclick="stopvsorc()">Detener VSoRC</button>
-          <button id="btnstartcontroller" type="button" name="button" onclick="startcontroller()">Iniciar controlador</button>
+          <button id="btnstartcontroller" type="button" name="button" onclick="startcontroller()">Iniciar controlador Simple Switch</button>
+          <button id="btnstartcontrollerrouter" type="button" name="button" onclick="startcontrollerrouter()">Iniciar controlador REST Router</button>
           <button id="btnstopcontroller" type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
         </div>
       </div>
@@ -48,10 +49,10 @@
         </div>
       </div>
       <div class="panel">
-        <textarea class="text" style="font-size: 12px;" rows="20" cols="7" id="vsorccommand" placeholder="Enviar comandos a la terminal"></textarea>
+	<input type="text" id="vsorccommand" style="background-color: rgba(255,255,255,0.8); font-size: 12px;" placeholder="Enviar comandos a la terminal"></input>
+       <!-- <textarea class="text" style="font-size: 12px;" rows="1" cols="20" id="vsorccommand" placeholder="Enviar comandos a la terminal"></textarea> -->
         <div class="buttons">
-        <button type="button" name="button" onclick="sendcommand()">Send</button>
-        <!-- <button type="button" name="button" onclick="cancel()">Cancel</button> -->
+        <button type="button" name="button" onclick="sendcommand()" id="btnsend">Send</button>
       </div>
       </div>
     </div>
@@ -78,6 +79,17 @@
       let controllerout = document.getElementById('controllerout'); //salida del controlador
       let raspberry = document.getElementById('raspberrys'); //monitor de las rpi disponibles
 
+  comando.addEventListener('keypress', function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+		if(comando.value != ""){
+	    document.getElementById('btnsend').click();
+}
+        }
+    });
+
+
+
       let timeVsorc = 1000;
       let timeController = 1000;
       let timeping = 5000;
@@ -88,7 +100,9 @@
 
       intervalVsorc = setInterval(getvsorcdata, timeVsorc);
       intervalController=setInterval(getcontrollerdata, timeController);
-      setInterval(rpiping,timeping);
+      setInterval(rpiping,timeping); //Para ver que rpi estan UP
+
+
       function rpiping() {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/rpiping', true);
@@ -112,7 +126,17 @@
           }
         }
         xhr.send();
-
+      }
+      function startcontrollerrouter() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/startcontrollerrouter', true);
+        //console.log(xhr); //para ver en la consola
+        xhr.onload = function() {
+          if (xhr.status == 200) { //can use this.status instead
+            console.log("controller started router");
+          }
+        }
+        xhr.send();
       }
       function cancel() {
         let xhr = new XMLHttpRequest();
@@ -146,16 +170,20 @@
         xhr.onload = function() {
           if (xhr.status == 200) { //can use this.status instead
             //console.log(xhr.responseText);// para ver en la consola
-            let controllerstat = xhr.response.split('^');
+
+            let controllerstat = xhr.response.split('^'); //La data del controlador y el estado de este llegan separados por ^
             if(controllerstat[1] === "true"){
             document.getElementById('btnstopcontroller').disabled = false;
             document.getElementById('btnstartcontroller').disabled = true;
+            document.getElementById('btnstartcontrollerrouter').disabled = true;
             }else{
               document.getElementById('btnstopcontroller').disabled = true;
               document.getElementById('btnstartcontroller').disabled = false;
+              document.getElementById('btnstartcontrollerrouter').disabled = false;
             }
             controllerout.value=controllerstat[0];
             console.log("getting controller data");
+            console.log(controllerstat);
           }
         }
         xhr.send();

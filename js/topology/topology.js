@@ -294,22 +294,18 @@ $(function () {
 // La funcion jsonget fue creada para sustituir el metodo json de D3
 
         function jsonget() {
-
           let xhr = new XMLHttpRequest();
           xhr.open('GET', "/gettopo" , true);
           //console.log(xhr); //para ver en la consola
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
-
-              listTopology(JSON.parse(xhr.responseText));
               plotGraph(toGraph(JSON.parse(xhr.responseText)));
             }
           }
           xhr.send();
         }
-
-        jsonget();
+      jsonget();
 
 
 

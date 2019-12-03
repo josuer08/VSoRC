@@ -54,13 +54,16 @@ text.start, text.end {
   stroke-width: 1px;
 }
 
-div.tooltip {	
-  position: absolute;			
-  text-align: left;				
+div.tooltip {
+  position: absolute;
+  text-align: left;
   padding: 5px;
   color: white;
-  background: var(--scolor-3);			
-  border: 0px;		
-  border-radius: 2px;			
-  pointer-events: none;			
+  background: var(--scolor-3);
+  border: 0px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.tab-list{
+  display: none;
 }

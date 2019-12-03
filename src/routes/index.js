@@ -4,6 +4,7 @@ const {
 const router = new Router();
 
 
+
 //renders de las paginas web
 router.get("/", (req, res) => {
   res.render("index")
@@ -40,6 +41,18 @@ router.get('/free', (req, res) => {
   });
 });
 
+router.post('/flowdel', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  var flow = JSON.stringify(req.body);
+  child = exec("curl -X POST -d "+req.body+"localhost:8080/flowdel", function(error, stdout, stderr) {
+    console.log(stdout);
+    console.log(req.body);
+    res.send(req.body);
+  });
+});
+
 
 router.get('/mpstat', (req, res) => {
   var sys = require('sys')
@@ -50,7 +63,6 @@ router.get('/mpstat', (req, res) => {
     res.send(stdout);
   });
 });
-
 
 router.get('/ifstat', (req, res) => {
   var sys = require('sys')
@@ -66,8 +78,8 @@ router.get('/showtemp', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  child = exec("cd /home/pi/scripts && ./gettemp.sh", function(error, stdout, stderr) {
-    console.log("show temp");
+  child = exec("cd /home/pi/scripts && (./multissh.sh  \"$(echo $(cat geteverything.sh))\" |grep -v rpi | sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4)", function(error, stdout, stderr) {
+    console.log("show temp");//this was modified
     res.send(stdout);
   });
 });
@@ -178,16 +190,26 @@ router.get('/getvsorcdata', (req, res) => {
     console.log("getting vsorc data");
     res.send(stdout+"^"+isVsorcUP);
   });
-
 });
 router.get('/getcontrollerdata', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
+  var child2;
+  child2 = exec("ps aux | grep python | grep ryu | grep -v grep |awk {'print $2'}", function(error, stdout, stderr) {
+    console.log(stdout);
+    console.log("view status controller");
+    if (stdout === ""){
+      isControllerUP = false;
+    }else {
+      isControllerUP = true;
+    }
+  });
   child = exec("cd /home/pi/scripts && cat controllerout 2>/dev/null", function(error, stdout, stderr) {
     console.log("getting controller data");
-    res.send(stdout+"^"+isControllerUP);
+    res.send(stdout+"^"+isControllerUP);//Send controller data and UP or DOWN separate by ^
   });
+
 });
 router.get('/listswitch', (req, res) => {
   var sys = require('sys')
@@ -199,15 +221,17 @@ router.get('/listswitch', (req, res) => {
     let value = '';
     try {
       value = JSON.parse(stdout)
+      res.send(value);
     }
     catch(error) {
-      console.error(error);
+      //console.error(error);
       console.log("no response from server");
       // expected output: ReferenceError: nonExistentFunction is not defined
       // Note - error messages will vary depending on browser
+      res.send("No response from server");
     }
 
-    res.send(value);
+
   });
 });
 
@@ -225,6 +249,76 @@ router.get('/status', (req, res) => {
   });
 });
 
+router.get('/tablestatus', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+	console.log(req.query);
+ 		child = exec("curl \"localhost:8080/data?tablestat="+req.query.tablestat+"\"", function(error, stdout, stderr) {
+		console.log("table status");
+		console.log(stdout);
+    let value = '';
+    try {
+      value = JSON.parse(stdout)
+      res.send(value);
+    }
+    catch(error) {
+      //console.error(error);
+      console.log("no response from server");
+      // expected output: ReferenceError: nonExistentFunction is not defined
+      // Note - error messages will vary depending on browser
+      let er = "No response from server";
+      res.send(JSON.stringify(er));
+    }
+			});
+});
+
+router.get('/portsdesc', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+        console.log(req.query);
+                child = exec("curl \"localhost:8080/data?portdesc="+req.query.portdesc+"\"", function(error, stdout, stderr) {
+                console.log("port desc");
+                let value = '';
+                try {
+                  value = JSON.parse(stdout)
+                  res.send(value);
+                }
+                catch(error) {
+                  //console.error(error);
+                  console.log("no response from server");
+                  // expected output: ReferenceError: nonExistentFunction is not defined
+                  // Note - error messages will vary depending on browser
+                  let er = "No response from server";
+                  res.send(JSON.stringify(er));
+                }
+  });
+});
+
+router.get('/portsstat', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+        console.log(req.query);
+                child = exec("curl \"localhost:8080/data?portstat="+req.query.portstat+"\"", function(error, stdout, stderr) {
+                console.log("port status");
+                console.log(stdout);
+                let value = '';
+                try {
+                  value = JSON.parse(stdout)
+                  res.send(value);
+                }
+                catch(error) {
+                  //console.error(error);
+                  console.log("no response from server");
+                  // expected output: ReferenceError: nonExistentFunction is not defined
+                  // Note - error messages will vary depending on browser
+                  let er = "No response from server";
+                  res.send(JSON.stringify(er));
+                }
+  });
+});
 
 router.get('/startcontroller', (req, res) => {
   isControllerUP = true;
@@ -235,6 +329,17 @@ router.get('/startcontroller', (req, res) => {
   //cd /home/pi && ./ejecutarcontroller.sh > /dev/null 2>&1 < /dev/null &  //comando anterior
   child = exec("cd /home/pi/scripts && touch controllerout && ./ejecutarcontroller.sh > controllerout 2>&1 &", function(error, stdout, stderr) {
     console.log("controller started");
+    res.send(stdout);
+  });
+});
+
+router.get('/startcontrollerrouter', (req, res) => {
+  isControllerUP = true;
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+  child = exec("cd /home/pi/scripts && touch controllerout && ./ryurouter.sh > controllerout 2>&1 &", function(error, stdout, stderr) {
+    console.log("controller REST Router started");
     res.send(stdout);
   });
 });
@@ -320,7 +425,7 @@ router.get('/stopvsorc', (req,res) =>{
 
   //antes, en ves de echo exit > fifo, estaba sudo kill $(ps aux | grep GRE| grep sudo|awk {'print $2'})
   console.log("Exiting...");
-  child2 = exec("cd /home/pi/scripts && echo exit > fifo && rm fifo", function(error, stdout, stderr) {
+  child2 = exec("cd /home/pi/scripts && echo exit > fifo && rm fifo && sudo killall tail", function(error, stdout, stderr) {
     console.log(stdout);
     payload+="killed\n\n"+stdout;
   });

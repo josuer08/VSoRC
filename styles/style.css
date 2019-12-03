@@ -165,10 +165,11 @@
 }
 
 .grid_14 { /*main*/
-	margin-left: 150px;
+	margin-left: 0px;
 	margin-right: 0px;
 	padding-top: 10px;
 	width: 1130px;
+	padding-left: 0px;
 }
 
 

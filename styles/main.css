@@ -100,8 +100,22 @@ flex-grow: 1;
 .TRAFFIC{
   flex-basis: 100%
 }
-
-
+.TEMP{
+flex-basis: 100%;
+}
+#temperatura{
+width: 100%;
+align-self: center;
+background-color: transparent;
+color: white;
+font-size: 1.6vw;
+font-weight: 900;
+}
+@media (max-width: 800px){
+ #temperatura{
+  font-size:16px;
+ }
+}
 
 .navbar{
   width: auto;
@@ -110,6 +124,7 @@ flex-grow: 1;
 
 #main{
   padding: 0em 10vw;
+  padding-left: 20px;
 }
 /* H1 to H6 */
 h1, h2, h3, h4, h5, h6, p, label, span{
@@ -153,4 +168,7 @@ select::-ms-expand {
 input[type=text]{
 border-radius: 0;
 border: 0;
+}
+#imgtoporouting{
+  width: 500px;
 }

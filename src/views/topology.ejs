@@ -16,18 +16,21 @@
 
 
   <title>Topology</title>
-	<!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="css\style.css?v2"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="css\table.css?v2"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="css\cards.css?v1"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="css\tabs.css?v1"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="css\menu.css?v2"> -->
 	<link rel="stylesheet" type="text/css" href="styles\topology.css?v3">
 	<script src="js/topology/jquery-3.3.1.min.js"></script>
-	<!--script src="https://d3js.org/d3.v4.min.js"></script-->
 	<script src="js/topology/d3.min.js"></script>
+
+       <!-- <link rel="stylesheet" type="text/css" href="styles\style.css"> -->
+       <link rel="stylesheet" type="text/css" href="styles\cards.css"> 
+       <!-- <link rel="stylesheet" type="text/css" href="styles\table.css"> --> 
+       <!-- <link rel="stylesheet" type="text/css" href="styles\menu.css"> -->
+        <script src="js/topology/main.js"></script> 
+         <script src="js/topology/modules.js"></script>
+         <script src="js/topology/cards.js"></script> 
+
+
 </head>
-<body>
+<body onload="generateCards.run(views, 'cards');moduleManager.loadModules(views)">
 <div class="container_16">
 	<div id="header" class="grid_16">
 	<h1>Topology</h1>
@@ -35,8 +38,11 @@
 	</div>
 	<!-- <div id="menu" class="grid_2"></div> -->
 	<div id="main" class="grid_14"></div>
+	<div id="cards" class="grid_14"></div>
+
 </div>
-<!-- <script src="js/mainmenu.js"></script> -->
+
+<!-- <script src="js/topology/mainmenu.js"></script> -->
 <script src="js/topology/common.js"></script>
 <script src="js/topology/topology.js"></script>
 
