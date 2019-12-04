@@ -43,6 +43,14 @@ $(function () {
     //          "port": {"source": "00000003", "target": "00000002"}, "value": 4},
     //       ...
     //     ]}
+function displayMessage(msg) {
+    var $x = $("#snackbar");
+    $x.text(msg)
+    $x.toggleClass("show");
+    setTimeout(function () { $x.toggleClass("show"); }, 3000);
+}
+
+
     function toGraph(top) {
         var nodes = [];
         var links = [];
@@ -300,6 +308,9 @@ $(function () {
           xhr.onload = function() {
             if (xhr.status == 200) { //can use this.status instead
               //console.log(xhr.responseText);// para ver en la consola
+		if(xhr.response === null || xhr.response === ""){
+		displayMessage("No response from controller")
+		}
               plotGraph(toGraph(JSON.parse(xhr.responseText)));
             }
           }

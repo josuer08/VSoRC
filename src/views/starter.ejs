@@ -30,7 +30,7 @@
         <div class="buttons">
           <button id="btnstartvsorc" type="button" name="button" onclick="startvsorc()">Iniciar VSoRC</button>
           <button id="btnstopvsorc" type="button" name="button" onclick="stopvsorc()">Detener VSoRC</button>
-          <button id="btnstartcontroller" type="button" name="button" onclick="startcontroller()">Iniciar controlador Simple Switch</button>
+          <button id="btnstartcontroller" type="button" name="button" onclick="startcontroller()">Iniciar controlador Switching</button>
           <button id="btnstartcontrollerrouter" type="button" name="button" onclick="startcontrollerrouter()">Iniciar controlador REST Router</button>
           <button id="btnstopcontroller" type="button" name="button" onclick="stopcontroller()">Detener controlador</button>
         </div>
@@ -192,7 +192,7 @@
       }
       function sendcommand() {
         let xhr = new XMLHttpRequest();
-        cmd = JSON.stringify(comando.value);
+        cmd = comando.value;
         xhr.open('GET', '/sendcommand?cmd=' + cmd, true);
         xhr.onload = function() {
           if (xhr.status == 200) { //can use this.status instead

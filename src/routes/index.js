@@ -211,6 +211,42 @@ router.get('/getcontrollerdata', (req, res) => {
   });
 
 });
+
+
+router.get('/resetflows', (req, res) => {
+  var sys = require('sys')
+  var exec = require('child_process').exec;
+  var child;
+ var child2;
+let salida;
+  child = exec("curl localhost:8080/data?list=switches", function(error, stdout, stderr) {
+    let value = '';
+    try {
+      value = JSON.parse(stdout);
+      for (key in value){
+	child2 = exec("cd /home/pi/scripts && ./resetflows.sh "+key, function(err, out, stder){
+	console.log(out);
+	salida = out;
+});
+}
+
+if (stdout === undifined){
+res.send("Switches not found");
+}else{
+res.send(salida);
+}
+}
+    catch(error) {
+      //console.error(error);
+      console.log("no response from server");
+      // expected output: ReferenceError: nonExistentFunction is not def$
+      // Note - error messages will vary depending on browser
+      res.send("No response from server");
+    }
+  });
+});
+
+
 router.get('/listswitch', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
@@ -225,13 +261,11 @@ router.get('/listswitch', (req, res) => {
     }
     catch(error) {
       //console.error(error);
-      console.log("no response from server");
+      console.log("no response from controller");
       // expected output: ReferenceError: nonExistentFunction is not defined
       // Note - error messages will vary depending on browser
-      res.send("No response from server");
+      res.send(null);
     }
-
-
   });
 });
 
@@ -358,9 +392,12 @@ router.get('/sendcommand', (req, res) => {
   var sys = require('sys')
   var exec = require('child_process').exec;
   var child;
-  request = JSON.parse(req.query.cmd); //recibiendo el comando
-  child = exec("cd /home/pi/scripts && echo \""+request+"\" > fifo", function(error, stdout, stderr) {
-    console.log("command received \n" + request+"\n");
+  console.log(req.query);
+  // request = JSON.parse(req.query.cmd); //recibiendo el comando
+  //
+  // console.log(request);
+  child = exec("cd /home/pi/scripts && echo "+req.query.cmd+" > fifo", function(error, stdout, stderr) {
+    console.log("command received \n" + req.query.cmd+"\n");
     res.send(stdout);
   });
 });

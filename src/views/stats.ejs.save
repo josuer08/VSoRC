@@ -21,7 +21,7 @@
 	<!-- <div id="header" class="grid_16"> -->
 		<h1>Flow Tables</h1>
 		<button type="button" name="refresh" class="refresh">Refresh</button>
-		<button type="button" onclick="resetflows()">Reset Flows</button>
+		<button type="button" class="refresh" onclick="resetflows()">Reset Flows</button>
 
 		<!--button type="button" name="refresh" class="reficon"><i class="fa fa-refresh"></i></button-->
 	<!-- </div> -->
@@ -34,11 +34,16 @@
 <script src="js\topology\flowtables.js?v2"></script>
 <script>
       function resetflows() {
+
+exit
+exit
+exit
+
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/resetflows', true);
         xhr.onload = function() {
           if (xhr.status == 200) { 
-            displayMessage(xhr.response)
+            displayMessage("Flows changed by default")
           }
         }
         xhr.send();
