@@ -7,7 +7,7 @@ const router = new Router();
 
 //renders de las paginas web
 router.get("/", (req, res) => {
-  res.render("index")
+  res.render("starter")
 });
 
 router.get("/access", (req, res) => {
@@ -27,8 +27,8 @@ router.get("/topology", (req, res) => {
 });
 let isVsorcUP = false;
 let isControllerUP = false;
-router.get("/topologyMaker", (req, res) => {
-  res.render("topologyMaker")
+router.get("/health", (req, res) => {
+  res.render("index")
 });
 //en lo adelante se encuentran las peticiones de datos
 router.get('/free', (req, res) => {
@@ -178,8 +178,9 @@ router.get('/getvsorcdata', (req, res) => {
   var exec = require('child_process').exec;
   var child;
   var child2;
+  var child3;
   child2 = exec("ps aux | grep GRE| grep sudo | grep -v tail| awk {'print $2'}", function(error, stdout, stderr) {
-    console.log("view status vsorc");
+    console.log("view status vsorc"); //Cambia el valor de isVsorcUP revisando el ID proceso
     if (stdout === ""){
       isVsorcUP = false;
     }else {
@@ -190,6 +191,7 @@ router.get('/getvsorcdata', (req, res) => {
     console.log("getting vsorc data");
     res.send(stdout+"^"+isVsorcUP);
   });
+
 });
 router.get('/getcontrollerdata', (req, res) => {
   var sys = require('sys')
@@ -241,7 +243,7 @@ res.send(salida);
       console.log("no response from server");
       // expected output: ReferenceError: nonExistentFunction is not def$
       // Note - error messages will vary depending on browser
-      res.send("No response from server");
+    
     }
   });
 });

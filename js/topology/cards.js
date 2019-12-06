@@ -92,7 +92,7 @@ var generateCards = ( function() {
 var views = [
 {id:"mSwitch", cmd:"/listswitch", dsc:"Open V Switch ID(s)", call:dpList, ref:true},
 {id:"mTableStats", cmd:"/tablestatus?tablestat=<dpid>", dsc:"Table stats", call:dpTable, ref:true},
-{id:"mPortDesc", cmd:"/portsdesc?portdesc=<dpid>", dsc:"Port Desc", call:dpTable, ref:true},
+//{id:"mPortDesc", cmd:"/portsdesc?portdesc=<dpid>", dsc:"Port Desc", call:dpTable, ref:true},
 {id:"mPorts", cmd:"/portsstat?portstat=<dpid>", dsc:"Ports stats", call:dpTable, ref:true},
 //{id:"mTableFeature", cmd:"/data?tablefeature=<dpid>", dsc:"Table Features", call:dpTable, ref:true},
 //{id:"mQueueStats", cmd:"/data?queuestat=<dpid>", dsc:"Queue Stats", call:dpTable, ref:true},
