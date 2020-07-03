@@ -12,8 +12,6 @@
   "description": "Esta es una web de prueba",
   "dependencies": {
     "ejs": "^2.6.2",
-    "express": "^4.17.1",
-    "xterm-addon-attach": "^0.3.0",
-    "xterm-addon-fit": "^0.3.0"
+    "express": "^4.17.1"
   }
 }
